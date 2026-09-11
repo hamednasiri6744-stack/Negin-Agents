@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=75", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "enterprise-master-agent"
+version = "0.1.0"
+requires-python = ">=3.12"
+dependencies = [
+  "fastapi>=0.116",
+  "uvicorn[standard]>=0.35",
+  "pydantic>=2.11",
+  "pyyaml>=6.0",
+  "httpx>=0.28",
+  "clickhouse-connect>=0.8",
+  "pyodbc>=5.2",
+  "psutil>=7.0"
+]
+
+[project.optional-dependencies]
+rpa = [
+  "pywinauto>=0.6.9; platform_system == 'Windows'",
+  "pyautogui>=0.9.54",
+  "playwright>=1.55"
+]
+dev = ["pytest>=8.4"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]

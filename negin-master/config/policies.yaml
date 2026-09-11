@@ -1,0 +1,31 @@
+version: 1
+production:
+  direct_server_execution: false
+  sql_write: false
+  ddl: false
+  heavy_query: false
+  full_table_scan: false
+  wol_server_execution: false
+
+local:
+  allowed_write_roots:
+    - "c:\\enterprise-master-agent"
+  protected_roots:
+    - "\\\\server"
+    - "\\\\servernew"
+    - "c:\\windows"
+  dangerous_shell_patterns:
+    - "shutdown"
+    - "restart-computer"
+    - "stop-computer"
+    - "format "
+    - "diskpart"
+    - "rm -rf /"
+  max_command_seconds: 120
+
+data:
+  production_read_only: true
+  max_rows: 5000
+  query_timeout_seconds: 10
+  production_is_last_resort: true
+  heavy_compute_destination: clickhouse

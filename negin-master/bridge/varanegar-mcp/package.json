@@ -1,0 +1,11 @@
+{
+  "name": "negin-varanegar-readonly-mcp",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Strict read-only MCP server for Varanegar SQL Server databases.",
+  "scripts": {
+    "start": "node server.mjs",
+    "test": "node test-security.mjs"
+  }
+}

@@ -1,0 +1,14 @@
+version: 1
+terms:
+  - canonical: net_sales_today
+    domain: sales
+    persian_name: فروش خالص امروز
+    synonyms: [فروش امروز, فروش روز, عملکرد فروش امروز, فروش جاری]
+  - canonical: target_achievement
+    domain: sales
+    persian_name: درصد تحقق تارگت
+    synonyms: [تحقق تارگت, درصد تارگت, تحقق هدف فروش]
+  - canonical: inventory_on_hand
+    domain: warehouse
+    persian_name: موجودی فعلی
+    synonyms: [موجودی, موجودی انبار, موجودی کالا]

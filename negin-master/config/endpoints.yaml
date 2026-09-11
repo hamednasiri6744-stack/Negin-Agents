@@ -1,0 +1,10 @@
+version: 1
+endpoints:
+  - id: local-workstation
+    kind: windows
+    active: true
+    local: true
+future:
+  distributed_endpoint_control: true
+  enrollment_required: true
+  per_endpoint_policy: true

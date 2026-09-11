@@ -1,0 +1,188 @@
+{
+  "pack_version": "1.0.0",
+  "pip_timeout_seconds": 90,
+  "core_packages": [
+    {
+      "name": "packaging",
+      "requirement": "packaging>=24,<27",
+      "import": "packaging",
+      "capability": "dependency/version contract evaluation"
+    },
+    {
+      "name": "pydantic",
+      "requirement": "pydantic>=2.12,<3",
+      "import": "pydantic",
+      "capability": "typed schemas and validation"
+    },
+    {
+      "name": "httpx",
+      "requirement": "httpx>=0.28,<1",
+      "import": "httpx",
+      "capability": "sync/async HTTP clients"
+    },
+    {
+      "name": "tenacity",
+      "requirement": "tenacity>=9,<10",
+      "import": "tenacity",
+      "capability": "bounded retry/backoff"
+    },
+    {
+      "name": "rich",
+      "requirement": "rich>=14,<15",
+      "import": "rich",
+      "capability": "diagnostics and CLI rendering"
+    },
+    {
+      "name": "typer",
+      "requirement": "typer>=0.27,<1",
+      "import": "typer",
+      "capability": "typed CLI construction"
+    },
+    {
+      "name": "tree-sitter",
+      "requirement": "tree-sitter>=0.25,<1",
+      "import": "tree_sitter",
+      "capability": "multi-language syntax parsing"
+    },
+    {
+      "name": "tree-sitter-language-pack",
+      "requirement": "tree-sitter-language-pack>=1.16,<2",
+      "import": "tree_sitter_language_pack",
+      "capability": "maintained grammar bundle"
+    },
+    {
+      "name": "libcst",
+      "requirement": "libcst>=1.8,<2",
+      "import": "libcst",
+      "capability": "lossless Python refactoring"
+    },
+    {
+      "name": "networkx",
+      "requirement": "networkx>=3.5,<4",
+      "import": "networkx",
+      "capability": "dependency/call graph analysis"
+    },
+    {
+      "name": "hypothesis",
+      "requirement": "hypothesis>=6.130,<7",
+      "import": "hypothesis",
+      "capability": "property-based testing"
+    },
+    {
+      "name": "coverage",
+      "requirement": "coverage>=7.10,<8",
+      "import": "coverage",
+      "capability": "test coverage analysis"
+    },
+    {
+      "name": "mypy",
+      "requirement": "mypy>=1.17,<2",
+      "import": "mypy",
+      "capability": "static type verification"
+    },
+    {
+      "name": "psutil",
+      "requirement": "psutil>=7,<8",
+      "import": "psutil",
+      "capability": "process/resource inspection"
+    },
+    {
+      "name": "orjson",
+      "requirement": "orjson>=3.11,<4",
+      "import": "orjson",
+      "capability": "fast structured payloads"
+    },
+    {
+      "name": "watchfiles",
+      "requirement": "watchfiles>=1.1,<2",
+      "import": "watchfiles",
+      "capability": "repository change detection"
+    },
+    {
+      "name": "jsonschema",
+      "requirement": "jsonschema>=4.25,<5",
+      "import": "jsonschema",
+      "capability": "JSON/MCP/OpenAPI schema validation"
+    },
+    {
+      "name": "GitPython",
+      "requirement": "GitPython>=3.1,<4",
+      "import": "git",
+      "capability": "Git repository automation"
+    },
+    {
+      "name": "pytest",
+      "requirement": "pytest>=8.4,<10",
+      "import": "pytest",
+      "capability": "test execution"
+    },
+    {
+      "name": "ruff",
+      "requirement": "ruff>=0.15.8,<1",
+      "import": null,
+      "capability": "linting and code quality"
+    }
+  ],
+  "optional_packages": [
+    {
+      "name": "deepdiff",
+      "tier": "optional",
+      "capability": "structured deep comparison"
+    },
+    {
+      "name": "radon",
+      "tier": "optional",
+      "capability": "complexity metrics"
+    },
+    {
+      "name": "bandit",
+      "tier": "optional",
+      "capability": "Python security linting"
+    },
+    {
+      "name": "pip-audit",
+      "tier": "optional",
+      "capability": "Python dependency vulnerability audit"
+    },
+    {
+      "name": "semgrep",
+      "tier": "optional",
+      "capability": "multi-language static/security analysis"
+    },
+    {
+      "name": "polars",
+      "tier": "optional",
+      "capability": "high-performance local data analysis"
+    },
+    {
+      "name": "duckdb",
+      "tier": "optional",
+      "capability": "local analytical SQL"
+    },
+    {
+      "name": "pyarrow",
+      "tier": "optional",
+      "capability": "columnar data interchange"
+    },
+    {
+      "name": "sqlglot",
+      "tier": "optional",
+      "capability": "SQL parsing and transformation"
+    },
+    {
+      "name": "memray",
+      "tier": "on_demand",
+      "capability": "memory profiling"
+    },
+    {
+      "name": "py-spy",
+      "tier": "on_demand",
+      "capability": "sampling CPU profiling"
+    },
+    {
+      "name": "datamodel-code-generator",
+      "tier": "optional",
+      "capability": "schema-to-model generation"
+    }
+  ]
+}

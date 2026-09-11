@@ -1,0 +1,59 @@
+{
+  "project": "NeginAI",
+  "root": "D:\\Projects\\NeginAI",
+  "role": "design_authority",
+  "primary_locale": "fa-IR",
+  "primary_direction": "rtl",
+  "required_directions": [
+    "rtl",
+    "ltr"
+  ],
+  "preserve_visual_identity": true,
+  "redesign_requires_explicit_owner_request": true,
+  "viewports": [
+    {
+      "name": "mobile-compact",
+      "width": 360,
+      "height": 800
+    },
+    {
+      "name": "mobile-primary",
+      "width": 390,
+      "height": 844
+    },
+    {
+      "name": "tablet",
+      "width": 768,
+      "height": 1024
+    },
+    {
+      "name": "desktop-compact",
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "name": "desktop-primary",
+      "width": 1440,
+      "height": 900
+    }
+  ],
+  "allowed_runtime_hosts": [
+    "127.0.0.1",
+    "localhost",
+    "desktop-hvpmgnd.tail4ce641.ts.net"
+  ],
+  "quality_targets": {
+    "wcag": "2.2 AA",
+    "horizontal_overflow": 0,
+    "console_app_errors": 0,
+    "axe_serious_or_critical": 0,
+    "touch_target_min_px": 44,
+    "lighthouse_performance_target": 90,
+    "lighthouse_accessibility_target": 95,
+    "lighthouse_best_practices_target": 95,
+    "cls_target_max": 0.1,
+    "lcp_target_ms_max": 2500
+  },
+  "implementation_owner": "Code-X",
+  "verification_owner": "UX-X"
+}
