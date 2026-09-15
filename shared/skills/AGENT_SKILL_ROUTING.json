@@ -1,0 +1,33 @@
+{
+  "schema": "neginai-skill-routing-v1",
+  "version": 1,
+  "canonical_root": "/app/shared/skills",
+  "agents": {
+    "Negin-Master": {
+      "role": "orchestrator",
+      "primary": [],
+      "skills": []
+    },
+    "Code-X": {
+      "role": "implementation",
+      "primary": [],
+      "skills": []
+    },
+    "UX-X": {
+      "role": "ui-ux-audit",
+      "primary": [],
+      "skills": []
+    },
+    "Data-X": {
+      "role": "data-specialist",
+      "primary": [],
+      "skills": []
+    },
+    "Automation-X": {
+      "role": "automation-specialist",
+      "primary": [],
+      "skills": []
+    }
+  },
+  "skill_keywords": {}
+}

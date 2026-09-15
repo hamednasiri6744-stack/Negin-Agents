@@ -1,0 +1,183 @@
+services:
+  negin-master:
+    image: python:3.12-slim
+    working_dir: /app/negin-master
+    volumes:
+      - .:/app
+    environment:
+      - ema_host=0.0.0.0
+      - ema_port=8765
+      - PYTHONPATH=/app/negin-master/src
+    command: >
+      bash -c "pip install --no-cache-dir fastapi 'uvicorn[standard]' pydantic pyyaml httpx psutil &&
+      python -m uvicorn enterprise_master_agent.app:app --host 0.0.0.0 --port 8765"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8765/health').read()"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 15s
+    restart: unless-stopped
+
+  mcp-bridge:
+    image: node:22
+    working_dir: /app/negin-master/bridge
+    volumes:
+      - .:/app
+    environment:
+      - ema_mcp_endpoint_token=a217900cde9300d22689774d5f5c7fb50d7aae95e42ec1f033ce3b08939f3574
+      - ema_core_url=http://negin-master:8765
+      - ema_mcp_host=0.0.0.0
+      - ema_mcp_port=8766
+      - ema_skills_root=/app/negin-master/.agents/skills
+    command: >
+      bash -c "npm install && node src/server.mjs"
+    depends_on:
+      negin-master:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:8766/health',r=>process.exit(r.statusCode<400?0:1)).on('error',()=>process.exit(1))"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+    restart: unless-stopped
+
+  code-x:
+    image: python:3.12-slim
+    working_dir: /app/code-x
+    volumes:
+      - .:/app
+    environment:
+      - PYTHONPATH=/app/code-x
+      - CODE_X_CONFIG=/app/code-x/.code-x/config.json
+    command: >
+      bash -c "python -m code_x_agent.cli mcp --transport http"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8777/health').read()"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 5s
+    restart: unless-stopped
+
+  ux-x:
+    image: node:22
+    working_dir: /app/ux-x
+    volumes:
+      - .:/app
+    environment:
+      - UX_X_BEARER_TOKEN=2e25b1ca542fcf113edc70d162b3d1e35a7a714f5d660423
+      - UX_X_HOST=0.0.0.0
+      - UX_X_PORT=8780
+      - NEGINAI_SKILL_ROOT=/app/shared/skills
+    command: >
+      bash -c "node server/index.js http"
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:8780/health',r=>process.exit(r.statusCode<400?0:1)).on('error',()=>process.exit(1))"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 5s
+    restart: unless-stopped
+
+  data-x:
+    image: node:22
+    working_dir: /app
+    volumes:
+      - .:/app
+    environment:
+      - DATA_X_BEARER_TOKEN=34bf4cb5fcfdaceeec16cab0212f11e0b88e4d721b4a01e1
+      - EMA_CORE_URL=http://negin-master:8765
+      - NEGINAI_SKILL_ROOT=/app/shared/skills
+    command: >
+      bash -c "node shared/specialist-host/host.js data-x/data-x.config.json"
+    depends_on:
+      negin-master:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:8781/health',r=>process.exit(r.statusCode<400?0:1)).on('error',()=>process.exit(1))"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 5s
+    restart: unless-stopped
+
+  automation-x:
+    image: node:22
+    working_dir: /app
+    volumes:
+      - .:/app
+    environment:
+      - AUTOMATION_X_BEARER_TOKEN=3256d6fbaf59ae942ce03d3aaa653e1d1438bc1513cff794
+      - EMA_CORE_URL=http://negin-master:8765
+      - AIRFLOW_BASE_URL=http://127.0.0.1:8080
+      - NEGINAI_SKILL_ROOT=/app/shared/skills
+    command: >
+      bash -c "node shared/specialist-host/host.js automation-x/automation-x.config.json"
+    depends_on:
+      negin-master:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:8782/health',r=>process.exit(r.statusCode<400?0:1)).on('error',()=>process.exit(1))"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 5s
+    restart: unless-stopped
+
+  gateway:
+    image: node:22
+    working_dir: /app/gateway
+    volumes:
+      - .:/app
+    environment:
+      - ema_mcp_endpoint_token=a217900cde9300d22689774d5f5c7fb50d7aae95e42ec1f033ce3b08939f3574
+      - CODE_X_BEARER_TOKEN=25df9b25625a32bcd014784da8def55b10ce86e8b3e23161
+      - UX_X_BEARER_TOKEN=2e25b1ca542fcf113edc70d162b3d1e35a7a714f5d660423
+      - DATA_X_BEARER_TOKEN=34bf4cb5fcfdaceeec16cab0212f11e0b88e4d721b4a01e1
+      - AUTOMATION_X_BEARER_TOKEN=3256d6fbaf59ae942ce03d3aaa653e1d1438bc1513cff794
+    command: >
+      bash -c "node agent-gateway.js"
+    depends_on:
+      mcp-bridge:
+        condition: service_healthy
+      code-x:
+        condition: service_healthy
+      ux-x:
+        condition: service_healthy
+      data-x:
+        condition: service_healthy
+      automation-x:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:8791/health/all',r=>process.exit(r.statusCode<400?0:1)).on('error',()=>process.exit(1))"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+    restart: unless-stopped
+
+  dashboard:
+    image: node:22
+    working_dir: /app/dashboard
+    volumes:
+      - .:/app
+    environment:
+      - GATEWAY_HOST=gateway
+      - GATEWAY_PORT=8791
+      - GATEWAY_TOKEN=cd2a7a80347db5894cb3c17227ed8a16b68e64982da888cf
+    command: >
+      bash -c "node server.js"
+    ports:
+      - "3000:3000"
+    depends_on:
+      gateway:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:3000/',r=>process.exit(r.statusCode<400?0:1)).on('error',()=>process.exit(1))"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 5s
+    restart: unless-stopped

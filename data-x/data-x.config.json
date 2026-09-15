@@ -1,0 +1,12 @@
+{
+  "name": "Data-X",
+  "id": "data-x",
+  "version": "0.1.0",
+  "module": "./data-x.js",
+  "port": 8781,
+  "host": "0.0.0.0",
+  "token_env": "DATA_X_BEARER_TOKEN",
+  "allowed_roots": ["/app"],
+  "runtime_mode": "readonly",
+  "instructions": "Data-X is a read-only data specialist. It provides file-based data tools and proxies to the Enterprise Master Agent core for SQL and analytics."
+}

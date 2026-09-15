@@ -1,0 +1,12 @@
+{
+  "name": "Automation-X",
+  "id": "automation-x",
+  "version": "0.1.0",
+  "module": "./automation-x.js",
+  "port": 8782,
+  "host": "0.0.0.0",
+  "token_env": "AUTOMATION_X_BEARER_TOKEN",
+  "allowed_roots": ["/app"],
+  "runtime_mode": "readonly",
+  "instructions": "Automation-X is an automation specialist. It provides workflow and Airflow integration tools and proxies to the Enterprise Master Agent core."
+}

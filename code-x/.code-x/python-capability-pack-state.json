@@ -1,0 +1,219 @@
+{
+  "schema_version": 1,
+  "pack_version": "1.0.0",
+  "manifest_fingerprint": "6398cb77f47854dffa14e35bad0c2ba51d723742c5a7de7da44afed1fe3e37ee",
+  "last_success_fingerprint": "6398cb77f47854dffa14e35bad0c2ba51d723742c5a7de7da44afed1fe3e37ee",
+  "last_trigger": "mcp_reconnect",
+  "last_attempt_utc": "2026-09-15T20:18:02.329171+00:00",
+  "last_success_utc": "2026-09-15T20:18:02.329171+00:00",
+  "compliant": true,
+  "degraded": false,
+  "changed": true,
+  "pip_invoked": true,
+  "pip_returncode": 0,
+  "pip_duration_ms": 13172,
+  "duration_ms": 13214,
+  "last_error_type": null,
+  "packages": [
+    {
+      "name": "packaging",
+      "requirement": "packaging>=24,<27",
+      "version": "26.3",
+      "import": "packaging",
+      "import_ok": true,
+      "version_ok": true,
+      "compliant": true,
+      "capability": "dependency/version contract evaluation"
+    },
+    {
+      "name": "pydantic",
+      "requirement": "pydantic>=2.12,<3",
+      "version": "2.13.5",
+      "import": "pydantic",
+      "import_ok": true,
+      "version_ok": true,
+      "compliant": true,
+      "capability": "typed schemas and validation"
+    },
+    {
+      "name": "httpx",
+      "requirement": "httpx>=0.28,<1",
+      "version": "0.28.1",
+      "import": "httpx",
+      "import_ok": true,
+      "version_ok": true,
+      "compliant": true,
+      "capability": "sync/async HTTP clients"
+    },
+    {
+      "name": "tenacity",
+      "requirement": "tenacity>=9,<10",
+      "version": "9.1.4",
+      "import": "tenacity",
+      "import_ok": true,
+      "version_ok": true,
+      "compliant": true,
+      "capability": "bounded retry/backoff"
+    },
+    {
+      "name": "rich",
+      "requirement": "rich>=14,<15",
+      "version": "14.3.4",
+      "import": "rich",
+      "import_ok": true,
+      "version_ok": true,
+      "compliant": true,
+      "capability": "diagnostics and CLI rendering"
+    },
+    {
+      "name": "typer",
+      "requirement": "typer>=0.27,<1",
+      "version": "0.27.2",
+      "import": "typer",
+      "import_ok": true,
+      "version_ok": true,
+      "compliant": true,
+      "capability": "typed CLI construction"
+    },
+    {
+      "name": "tree-sitter",
+      "requirement": "tree-sitter>=0.25,<1",
+      "version": "0.26.0",
+      "import": "tree_sitter",
+      "import_ok": true,
+      "version_ok": true,
+      "compliant": true,
+      "capability": "multi-language syntax parsing"
+    },
+    {
+      "name": "tree-sitter-language-pack",
+      "requirement": "tree-sitter-language-pack>=1.16,<2",
+      "version": "1.20.0",
+      "import": "tree_sitter_language_pack",
+      "import_ok": true,
+      "version_ok": true,
+      "compliant": true,
+      "capability": "maintained grammar bundle"
+    },
+    {
+      "name": "libcst",
+      "requirement": "libcst>=1.8,<2",
+      "version": "1.9.0",
+      "import": "libcst",
+      "import_ok": true,
+      "version_ok": true,
+      "compliant": true,
+      "capability": "lossless Python refactoring"
+    },
+    {
+      "name": "networkx",
+      "requirement": "networkx>=3.5,<4",
+      "version": "3.6.1",
+      "import": "networkx",
+      "import_ok": true,
+      "version_ok": true,
+      "compliant": true,
+      "capability": "dependency/call graph analysis"
+    },
+    {
+      "name": "hypothesis",
+      "requirement": "hypothesis>=6.130,<7",
+      "version": "6.168.0",
+      "import": "hypothesis",
+      "import_ok": true,
+      "version_ok": true,
+      "compliant": true,
+      "capability": "property-based testing"
+    },
+    {
+      "name": "coverage",
+      "requirement": "coverage>=7.10,<8",
+      "version": "7.16.1",
+      "import": "coverage",
+      "import_ok": true,
+      "version_ok": true,
+      "compliant": true,
+      "capability": "test coverage analysis"
+    },
+    {
+      "name": "mypy",
+      "requirement": "mypy>=1.17,<2",
+      "version": "1.20.2",
+      "import": "mypy",
+      "import_ok": true,
+      "version_ok": true,
+      "compliant": true,
+      "capability": "static type verification"
+    },
+    {
+      "name": "psutil",
+      "requirement": "psutil>=7,<8",
+      "version": "7.2.2",
+      "import": "psutil",
+      "import_ok": true,
+      "version_ok": true,
+      "compliant": true,
+      "capability": "process/resource inspection"
+    },
+    {
+      "name": "orjson",
+      "requirement": "orjson>=3.11,<4",
+      "version": "3.12.0",
+      "import": "orjson",
+      "import_ok": true,
+      "version_ok": true,
+      "compliant": true,
+      "capability": "fast structured payloads"
+    },
+    {
+      "name": "watchfiles",
+      "requirement": "watchfiles>=1.1,<2",
+      "version": "1.2.0",
+      "import": "watchfiles",
+      "import_ok": true,
+      "version_ok": true,
+      "compliant": true,
+      "capability": "repository change detection"
+    },
+    {
+      "name": "jsonschema",
+      "requirement": "jsonschema>=4.25,<5",
+      "version": "4.26.0",
+      "import": "jsonschema",
+      "import_ok": true,
+      "version_ok": true,
+      "compliant": true,
+      "capability": "JSON/MCP/OpenAPI schema validation"
+    },
+    {
+      "name": "GitPython",
+      "requirement": "GitPython>=3.1,<4",
+      "version": "3.1.62",
+      "import": "git",
+      "import_ok": true,
+      "version_ok": true,
+      "compliant": true,
+      "capability": "Git repository automation"
+    },
+    {
+      "name": "pytest",
+      "requirement": "pytest>=8.4,<10",
+      "version": "9.1.1",
+      "import": "pytest",
+      "import_ok": true,
+      "version_ok": true,
+      "compliant": true,
+      "capability": "test execution"
+    },
+    {
+      "name": "ruff",
+      "requirement": "ruff>=0.15.8,<1",
+      "version": "0.16.7",
+      "import": null,
+      "import_ok": true,
+      "version_ok": true,
+      "compliant": true,
+      "capability": "linting and code quality"
+    }
+  ]
+}

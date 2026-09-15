@@ -1,0 +1,3214 @@
+{
+  "updated_at": "2026-09-15T20:19:04.233Z",
+  "agents": {
+    "master": {
+      "ok": true,
+      "label": "Negin-Master",
+      "updated_at": "2026-09-15T20:19:04.225Z",
+      "tools": [
+        {
+          "name": "agent_status",
+          "description": "Use this when you need to verify that the Enterprise Master Agent is online.",
+          "inputSchema": {
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "type": "object",
+            "properties": {}
+          },
+          "annotations": {
+            "readOnlyHint": true,
+            "destructiveHint": false,
+            "openWorldHint": false
+          },
+          "execution": {
+            "taskSupport": "forbidden"
+          }
+        },
+        {
+          "name": "agent_capabilities",
+          "description": "Use this before planning work that may require local, data, RPA, workflow, or delegated capabilities.",
+          "inputSchema": {
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "type": "object",
+            "properties": {}
+          },
+          "annotations": {
+            "readOnlyHint": true,
+            "destructiveHint": false,
+            "openWorldHint": false
+          },
+          "execution": {
+            "taskSupport": "forbidden"
+          }
+        },
+        {
+          "name": "enterprise_semantic_resolve",
+          "description": "Use this to map Persian organizational language to canonical business semantics.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "text": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "text"
+            ],
+            "additionalProperties": false,
+            "$schema": "http://json-schema.org/draft-07/schema#"
+          },
+          "annotations": {
+            "readOnlyHint": true,
+            "destructiveHint": false,
+            "openWorldHint": false
+          },
+          "execution": {
+            "taskSupport": "forbidden"
+          }
+        },
+        {
+          "name": "enterprise_query_plan",
+          "description": "Use this to select the fastest safe data path; production read-only must remain last resort.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "availability": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "boolean"
+                }
+              }
+            },
+            "required": [
+              "availability"
+            ],
+            "additionalProperties": false,
+            "$schema": "http://json-schema.org/draft-07/schema#"
+          },
+          "annotations": {
+            "readOnlyHint": true,
+            "destructiveHint": false,
+            "openWorldHint": false
+          },
+          "execution": {
+            "taskSupport": "forbidden"
+          }
+        },
+        {
+          "name": "agent_execute_local_shell",
+          "description": "Use this only for guarded execution on the local workstation. Never target the production server.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "command": {
+                "type": "string",
+                "minLength": 1
+              },
+              "cwd": {
+                "type": "string"
+              },
+              "timeout": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 120
+              }
+            },
+            "required": [
+              "command"
+            ],
+            "additionalProperties": false,
+            "$schema": "http://json-schema.org/draft-07/schema#"
+          },
+          "annotations": {
+            "readOnlyHint": false,
+            "destructiveHint": true,
+            "openWorldHint": false
+          },
+          "execution": {
+            "taskSupport": "forbidden"
+          }
+        },
+        {
+          "name": "agent_require_capability",
+          "description": "Use this when a required capability is missing. It checkpoints the task and returns the exact capability gap for owner approval.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "capability": {
+                "type": "string",
+                "minLength": 1
+              },
+              "intent": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "capability",
+              "intent"
+            ],
+            "additionalProperties": false,
+            "$schema": "http://json-schema.org/draft-07/schema#"
+          },
+          "annotations": {
+            "readOnlyHint": false,
+            "destructiveHint": false,
+            "openWorldHint": false,
+            "idempotentHint": true
+          },
+          "execution": {
+            "taskSupport": "forbidden"
+          }
+        },
+        {
+          "name": "remote_server_performance_readonly",
+          "description": "Use this only for owner-approved read-only diagnostics of an allowlisted Windows server. It reads fixed CPU, RAM, paging, disk, network and process telemetry only; no arbitrary command or mutation is available.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "target": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 253
+              },
+              "top_n": {
+                "type": "integer",
+                "minimum": 5,
+                "maximum": 30
+              }
+            },
+            "additionalProperties": false,
+            "$schema": "http://json-schema.org/draft-07/schema#"
+          },
+          "annotations": {
+            "readOnlyHint": true,
+            "destructiveHint": false,
+            "openWorldHint": true
+          },
+          "execution": {
+            "taskSupport": "forbidden"
+          }
+        },
+        {
+          "name": "wol_generate_script",
+          "description": "Use this to generate, never execute, a Wake-on-LAN PowerShell script for manual server-side execution by the owner.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "mac": {
+                "type": "string",
+                "minLength": 11
+              },
+              "broadcast": {
+                "type": "string",
+                "minLength": 7
+              },
+              "port": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 65535
+              }
+            },
+            "required": [
+              "mac",
+              "broadcast"
+            ],
+            "additionalProperties": false,
+            "$schema": "http://json-schema.org/draft-07/schema#"
+          },
+          "annotations": {
+            "readOnlyHint": false,
+            "destructiveHint": false,
+            "openWorldHint": false,
+            "idempotentHint": true
+          },
+          "execution": {
+            "taskSupport": "forbidden"
+          }
+        },
+        {
+          "name": "knowledge_import",
+          "description": "Import one approved local Markdown ZIP as verified, versioned, read-only knowledge. This never installs or overwrites skills.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "archive_path": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 1000
+              },
+              "expected_sha256": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              }
+            },
+            "required": [
+              "archive_path",
+              "expected_sha256"
+            ],
+            "additionalProperties": false,
+            "$schema": "http://json-schema.org/draft-07/schema#"
+          },
+          "annotations": {
+            "readOnlyHint": false,
+            "destructiveHint": false,
+            "idempotentHint": true,
+            "openWorldHint": false
+          },
+          "execution": {
+            "taskSupport": "forbidden"
+          }
+        },
+        {
+          "name": "knowledge_status",
+          "description": "Read the active knowledge version and the verified import history.",
+          "inputSchema": {
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "type": "object",
+            "properties": {}
+          },
+          "annotations": {
+            "readOnlyHint": true,
+            "destructiveHint": false,
+            "idempotentHint": true,
+            "openWorldHint": false
+          },
+          "execution": {
+            "taskSupport": "forbidden"
+          }
+        },
+        {
+          "name": "knowledge_search",
+          "description": "Search the active imported knowledge without activating captured skills.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "query": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 1000
+              },
+              "limit": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 50
+              }
+            },
+            "required": [
+              "query"
+            ],
+            "additionalProperties": false,
+            "$schema": "http://json-schema.org/draft-07/schema#"
+          },
+          "annotations": {
+            "readOnlyHint": true,
+            "destructiveHint": false,
+            "idempotentHint": true,
+            "openWorldHint": false
+          },
+          "execution": {
+            "taskSupport": "forbidden"
+          }
+        },
+        {
+          "name": "knowledge_rollback",
+          "description": "Activate a previously verified knowledge version without deleting content. Use only after explicit owner approval.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "version_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 300
+              }
+            },
+            "additionalProperties": false,
+            "$schema": "http://json-schema.org/draft-07/schema#"
+          },
+          "annotations": {
+            "readOnlyHint": false,
+            "destructiveHint": true,
+            "idempotentHint": true,
+            "openWorldHint": false
+          },
+          "execution": {
+            "taskSupport": "forbidden"
+          }
+        },
+        {
+          "name": "skill_catalog",
+          "description": "List specialist skills installed for Negin Agents. Use this when you need to discover which domain or engineering skills are available before performing specialist work.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "query": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false,
+            "$schema": "http://json-schema.org/draft-07/schema#"
+          },
+          "annotations": {
+            "readOnlyHint": true,
+            "destructiveHint": false,
+            "idempotentHint": true,
+            "openWorldHint": false
+          },
+          "execution": {
+            "taskSupport": "forbidden"
+          }
+        },
+        {
+          "name": "skill_resolve",
+          "description": "Resolve a user task to the most relevant Negin specialist skills. Use this before specialist engineering or enterprise work, then load the selected skill with skill_get.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "task": {
+                "type": "string",
+                "minLength": 2
+              },
+              "limit": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 10
+              }
+            },
+            "required": [
+              "task"
+            ],
+            "additionalProperties": false,
+            "$schema": "http://json-schema.org/draft-07/schema#"
+          },
+          "annotations": {
+            "readOnlyHint": true,
+            "destructiveHint": false,
+            "idempotentHint": true,
+            "openWorldHint": false
+          },
+          "execution": {
+            "taskSupport": "forbidden"
+          }
+        },
+        {
+          "name": "skill_get",
+          "description": "Load the full SKILL.md instructions for one exact installed Negin skill. Use after skill_resolve or skill_catalog and follow the returned workflow and guardrails.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "name"
+            ],
+            "additionalProperties": false,
+            "$schema": "http://json-schema.org/draft-07/schema#"
+          },
+          "annotations": {
+            "readOnlyHint": true,
+            "destructiveHint": false,
+            "idempotentHint": true,
+            "openWorldHint": false
+          },
+          "execution": {
+            "taskSupport": "forbidden"
+          }
+        },
+        {
+          "name": "integrations_health",
+          "description": "Check live local ClickHouse, n8n, and RPA capability health.",
+          "inputSchema": {
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "type": "object",
+            "properties": {}
+          },
+          "annotations": {
+            "readOnlyHint": true,
+            "destructiveHint": false,
+            "openWorldHint": false
+          },
+          "execution": {
+            "taskSupport": "forbidden"
+          }
+        },
+        {
+          "name": "clickhouse_query",
+          "description": "Run a read-only analytical ClickHouse query on the local enterprise analytics plane.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "sql": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 20000
+              }
+            },
+            "required": [
+              "sql"
+            ],
+            "additionalProperties": false,
+            "$schema": "http://json-schema.org/draft-07/schema#"
+          },
+          "annotations": {
+            "readOnlyHint": true,
+            "destructiveHint": false,
+            "openWorldHint": false
+          },
+          "execution": {
+            "taskSupport": "forbidden"
+          }
+        },
+        {
+          "name": "sql_readonly_health",
+          "description": "Verify live SQL connectivity for Negin_Report_ReadOnly; the agent independently enforces no-write SQL even if legacy object grants exist.",
+          "inputSchema": {
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "type": "object",
+            "properties": {}
+          },
+          "annotations": {
+            "readOnlyHint": true,
+            "destructiveHint": false,
+            "openWorldHint": false
+          },
+          "execution": {
+            "taskSupport": "forbidden"
+          }
+        },
+        {
+          "name": "sql_readonly_query",
+          "description": "Run arbitrary bounded SELECT/CTE SQL using the Negin_Report_ReadOnly identity. Agent guard blocks writes, DDL, EXEC, comments, multi-statements, USE, INTO and DBCC.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "sql": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 20000
+              },
+              "max_rows": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 5000
+              }
+            },
+            "required": [
+              "sql"
+            ],
+            "additionalProperties": false,
+            "$schema": "http://json-schema.org/draft-07/schema#"
+          },
+          "annotations": {
+            "readOnlyHint": true,
+            "destructiveHint": false,
+            "openWorldHint": false
+          },
+          "execution": {
+            "taskSupport": "forbidden"
+          }
+        },
+        {
+          "name": "sql_deep_intelligence",
+          "description": "Bounded deep readonly SQL intelligence for catalog, relationships, dependencies, definitions, permission inventory, or per-table sampling.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "action": {
+                "type": "string",
+                "enum": [
+                  "catalog",
+                  "relationships",
+                  "dependencies",
+                  "definitions",
+                  "permissions",
+                  "table_profile"
+                ]
+              },
+              "schema": {
+                "type": "string",
+                "maxLength": 128
+              },
+              "table": {
+                "type": "string",
+                "maxLength": 128
+              },
+              "sample_rows": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 1000
+              }
+            },
+            "required": [
+              "action"
+            ],
+            "additionalProperties": false,
+            "$schema": "http://json-schema.org/draft-07/schema#"
+          },
+          "annotations": {
+            "readOnlyHint": true,
+            "destructiveHint": false,
+            "openWorldHint": false
+          },
+          "execution": {
+            "taskSupport": "forbidden"
+          }
+        },
+        {
+          "name": "varanegar_item_latest_pricing",
+          "description": "Return the latest bounded pricing history for one Varanegar goods code across verified sale, customer-price, buy-price, ICA buy-price and pricing-wizard tables. Strict production read-only approval gate remains mandatory.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "goods_code": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100
+              },
+              "limit": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 200
+              }
+            },
+            "required": [
+              "goods_code"
+            ],
+            "additionalProperties": false,
+            "$schema": "http://json-schema.org/draft-07/schema#"
+          },
+          "annotations": {
+            "readOnlyHint": true,
+            "destructiveHint": false,
+            "openWorldHint": false
+          },
+          "execution": {
+            "taskSupport": "forbidden"
+          }
+        },
+        {
+          "name": "varanegar_schema_search",
+          "description": "Search the live Varanegar/NeginPakhsh SQL catalog by table, schema or column keywords without scanning business data. Use this before building a new domain query.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "terms": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100
+                },
+                "minItems": 1,
+                "maxItems": 12
+              },
+              "max_rows": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 2000
+              }
+            },
+            "required": [
+              "terms"
+            ],
+            "additionalProperties": false,
+            "$schema": "http://json-schema.org/draft-07/schema#"
+          },
+          "annotations": {
+            "readOnlyHint": true,
+            "destructiveHint": false,
+            "openWorldHint": false
+          },
+          "execution": {
+            "taskSupport": "forbidden"
+          }
+        },
+        {
+          "name": "varanegar_domain_discovery",
+          "description": "Discover verified Varanegar schema objects for a business domain before querying it. Supported domains: sales, purchase, inventory, warehouse, treasury, banking, discounts, offers, tax, pricing, accounting, customer, supplier, hr.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "domain": {
+                "type": "string",
+                "enum": [
+                  "sales",
+                  "purchase",
+                  "inventory",
+                  "warehouse",
+                  "treasury",
+                  "banking",
+                  "discounts",
+                  "offers",
+                  "tax",
+                  "pricing",
+                  "accounting",
+                  "customer",
+                  "supplier",
+                  "hr"
+                ]
+              },
+              "max_rows": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 2000
+              }
+            },
+            "required": [
+              "domain"
+            ],
+            "additionalProperties": false,
+            "$schema": "http://json-schema.org/draft-07/schema#"
+          },
+          "annotations": {
+            "readOnlyHint": true,
+            "destructiveHint": false,
+            "openWorldHint": false
+          },
+          "execution": {
+            "taskSupport": "forbidden"
+          }
+        },
+        {
+          "name": "varanegar_readonly_query",
+          "description": "Run a bounded read-only SELECT/CTE against the verified Varanegar NeginPakhsh database after schema discovery. Writes, DDL, EXEC, comments, multi-statements, USE, INTO and DBCC remain blocked.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "sql": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 20000
+              },
+              "max_rows": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 5000
+              }
+            },
+            "required": [
+              "sql"
+            ],
+            "additionalProperties": false,
+            "$schema": "http://json-schema.org/draft-07/schema#"
+          },
+          "annotations": {
+            "readOnlyHint": true,
+            "destructiveHint": false,
+            "openWorldHint": false
+          },
+          "execution": {
+            "taskSupport": "forbidden"
+          }
+        },
+        {
+          "name": "system_performance_triage",
+          "description": "Diagnose local workstation CPU, RAM, paging, disk, network and runaway-process pressure without making changes.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "sample_seconds": {
+                "type": "number",
+                "minimum": 0.4,
+                "maximum": 3
+              },
+              "top_n": {
+                "type": "integer",
+                "minimum": 5,
+                "maximum": 30
+              }
+            },
+            "additionalProperties": false,
+            "$schema": "http://json-schema.org/draft-07/schema#"
+          },
+          "annotations": {
+            "readOnlyHint": true,
+            "destructiveHint": false,
+            "openWorldHint": false
+          },
+          "execution": {
+            "taskSupport": "forbidden"
+          }
+        },
+        {
+          "name": "mcp_transport_diagnostics",
+          "description": "Diagnose Core, MCP Bridge, listener ownership and Tailscale Serve/Funnel transport without mutation.",
+          "inputSchema": {
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "type": "object",
+            "properties": {}
+          },
+          "annotations": {
+            "readOnlyHint": true,
+            "destructiveHint": false,
+            "openWorldHint": false
+          },
+          "execution": {
+            "taskSupport": "forbidden"
+          }
+        },
+        {
+          "name": "api_intelligence_scan",
+          "description": "Discover local API routes, MCP tools, auth signals and API specs with secret redaction. Production SQL is never used by this skill.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "max_files": {
+                "type": "integer",
+                "minimum": 50,
+                "maximum": 2000
+              },
+              "max_results": {
+                "type": "integer",
+                "minimum": 20,
+                "maximum": 1000
+              }
+            },
+            "additionalProperties": false,
+            "$schema": "http://json-schema.org/draft-07/schema#"
+          },
+          "annotations": {
+            "readOnlyHint": true,
+            "destructiveHint": false,
+            "openWorldHint": false
+          },
+          "execution": {
+            "taskSupport": "forbidden"
+          }
+        },
+        {
+          "name": "capability_truth_contract",
+          "description": "Audit registered capabilities against executable MCP exposure. Use before claiming a new capability is active.",
+          "inputSchema": {
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "type": "object",
+            "properties": {}
+          },
+          "annotations": {
+            "readOnlyHint": true,
+            "destructiveHint": false,
+            "openWorldHint": false
+          },
+          "execution": {
+            "taskSupport": "forbidden"
+          }
+        },
+        {
+          "name": "task_universal_verifier",
+          "description": "Verify task completion from explicit postconditions and evidence. A task is not complete when required assertions fail or are absent.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "task_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200
+              },
+              "steps": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 200
+                    },
+                    "result": {
+                      "type": "object",
+                      "additionalProperties": {}
+                    },
+                    "assertions": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "kind": {
+                            "type": "string",
+                            "enum": [
+                              "field_equals",
+                              "field_true",
+                              "field_false",
+                              "field_exists",
+                              "contains",
+                              "returncode_zero",
+                              "status_2xx",
+                              "nonempty"
+                            ]
+                          },
+                          "field": {
+                            "type": "string",
+                            "maxLength": 300
+                          },
+                          "expected": {},
+                          "value": {}
+                        },
+                        "required": [
+                          "kind"
+                        ],
+                        "additionalProperties": false
+                      }
+                    }
+                  },
+                  "required": [
+                    "name"
+                  ],
+                  "additionalProperties": false
+                },
+                "minItems": 1,
+                "maxItems": 100
+              },
+              "require_all_steps": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "task_id",
+              "steps"
+            ],
+            "additionalProperties": false,
+            "$schema": "http://json-schema.org/draft-07/schema#"
+          },
+          "annotations": {
+            "readOnlyHint": true,
+            "destructiveHint": false,
+            "openWorldHint": false
+          },
+          "execution": {
+            "taskSupport": "forbidden"
+          }
+        },
+        {
+          "name": "shell_checked_sequence",
+          "description": "Execute local shell work as independently verified steps so one successful final command cannot hide an earlier failed command.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "steps": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 100
+                    },
+                    "command": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 12000
+                    },
+                    "cwd": {
+                      "type": "string",
+                      "maxLength": 1000
+                    },
+                    "timeout": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 120
+                    },
+                    "expect_returncode": {
+                      "type": "integer"
+                    },
+                    "stdout_contains": {
+                      "type": "string",
+                      "maxLength": 1000
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "command"
+                  ],
+                  "additionalProperties": false
+                },
+                "minItems": 1,
+                "maxItems": 30
+              },
+              "stop_on_error": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "steps"
+            ],
+            "additionalProperties": false,
+            "$schema": "http://json-schema.org/draft-07/schema#"
+          },
+          "annotations": {
+            "readOnlyHint": false,
+            "destructiveHint": true,
+            "openWorldHint": false
+          },
+          "execution": {
+            "taskSupport": "forbidden"
+          }
+        },
+        {
+          "name": "benchmark_regression",
+          "description": "Run the fixed Negin regression suite inside the project virtual environment and persist evidence.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "suite": {
+                "type": "string",
+                "enum": [
+                  "wave1",
+                  "core",
+                  "all_safe"
+                ]
+              }
+            },
+            "additionalProperties": false,
+            "$schema": "http://json-schema.org/draft-07/schema#"
+          },
+          "annotations": {
+            "readOnlyHint": false,
+            "destructiveHint": false,
+            "openWorldHint": false
+          },
+          "execution": {
+            "taskSupport": "forbidden"
+          }
+        },
+        {
+          "name": "tool_reliability_report",
+          "description": "Read structured route reliability telemetry including success rate, verification rate and p50/p95 latency. Request/response bodies and secrets are never stored.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "window_hours": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 720
+              },
+              "min_samples": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 1000
+              }
+            },
+            "additionalProperties": false,
+            "$schema": "http://json-schema.org/draft-07/schema#"
+          },
+          "annotations": {
+            "readOnlyHint": true,
+            "destructiveHint": false,
+            "openWorldHint": false
+          },
+          "execution": {
+            "taskSupport": "forbidden"
+          }
+        },
+        {
+          "name": "n8n_workflow_manage",
+          "description": "Manage local n8n workflow lifecycle through authenticated API with validation and safety gates.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "action": {
+                "type": "string",
+                "enum": [
+                  "auth_health",
+                  "list",
+                  "get",
+                  "validate",
+                  "create",
+                  "update",
+                  "activate",
+                  "deactivate",
+                  "delete",
+                  "export",
+                  "import"
+                ]
+              },
+              "workflow_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200
+              },
+              "workflow": {
+                "type": "object",
+                "additionalProperties": {}
+              },
+              "allow_risky_nodes": {
+                "type": "boolean"
+              },
+              "confirm_destructive": {
+                "type": "boolean"
+              },
+              "include_credential_refs": {
+                "type": "boolean"
+              },
+              "limit": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 100
+              },
+              "cursor": {
+                "type": "string",
+                "maxLength": 1000
+              }
+            },
+            "required": [
+              "action"
+            ],
+            "additionalProperties": false,
+            "$schema": "http://json-schema.org/draft-07/schema#"
+          },
+          "annotations": {
+            "readOnlyHint": false,
+            "destructiveHint": true,
+            "openWorldHint": false
+          },
+          "execution": {
+            "taskSupport": "forbidden"
+          }
+        },
+        {
+          "name": "n8n_webhook",
+          "description": "Execute a local n8n webhook workflow and recheck n8n after execution.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "path": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 500
+              },
+              "method": {
+                "type": "string",
+                "enum": [
+                  "get",
+                  "post"
+                ]
+              },
+              "payload": {
+                "type": "object",
+                "additionalProperties": {}
+              }
+            },
+            "required": [
+              "path"
+            ],
+            "additionalProperties": false,
+            "$schema": "http://json-schema.org/draft-07/schema#"
+          },
+          "annotations": {
+            "readOnlyHint": false,
+            "destructiveHint": false,
+            "openWorldHint": false
+          },
+          "execution": {
+            "taskSupport": "forbidden"
+          }
+        },
+        {
+          "name": "rpa_list_windows",
+          "description": "List visible local workstation windows before choosing an RPA target.",
+          "inputSchema": {
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "type": "object",
+            "properties": {}
+          },
+          "annotations": {
+            "readOnlyHint": true,
+            "destructiveHint": false,
+            "openWorldHint": false
+          },
+          "execution": {
+            "taskSupport": "forbidden"
+          }
+        },
+        {
+          "name": "rpa_click_control",
+          "description": "Click one explicitly named UI control in one explicitly matched local workstation window.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "window_title_re": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 500
+              },
+              "control_title": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 500
+              },
+              "control_type": {
+                "type": "string",
+                "maxLength": 100
+              }
+            },
+            "required": [
+              "window_title_re",
+              "control_title"
+            ],
+            "additionalProperties": false,
+            "$schema": "http://json-schema.org/draft-07/schema#"
+          },
+          "annotations": {
+            "readOnlyHint": false,
+            "destructiveHint": true,
+            "openWorldHint": false
+          },
+          "execution": {
+            "taskSupport": "forbidden"
+          }
+        },
+        {
+          "name": "rpa_type_text",
+          "description": "Type explicit text into one explicitly named UI control in one explicitly matched local workstation window.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "window_title_re": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 500
+              },
+              "control_title": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 500
+              },
+              "text": {
+                "type": "string",
+                "maxLength": 10000
+              },
+              "control_type": {
+                "type": "string",
+                "maxLength": 100
+              }
+            },
+            "required": [
+              "window_title_re",
+              "control_title",
+              "text"
+            ],
+            "additionalProperties": false,
+            "$schema": "http://json-schema.org/draft-07/schema#"
+          },
+          "annotations": {
+            "readOnlyHint": false,
+            "destructiveHint": true,
+            "openWorldHint": false
+          },
+          "execution": {
+            "taskSupport": "forbidden"
+          }
+        },
+        {
+          "name": "continuous_runtime_status",
+          "description": "Check durable non-stop execution worker, queue, checkpoint/retry and crash-recovery health.",
+          "inputSchema": {
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "type": "object",
+            "properties": {}
+          },
+          "annotations": {
+            "readOnlyHint": true,
+            "destructiveHint": false,
+            "openWorldHint": false
+          },
+          "execution": {
+            "taskSupport": "forbidden"
+          }
+        },
+        {
+          "name": "continuous_submit_job",
+          "description": "Submit a whitelisted durable background job. Jobs persist across agent restarts and can retry until success.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "self_test",
+                  "sql_ecosystem_discovery"
+                ]
+              },
+              "payload": {
+                "type": "object",
+                "additionalProperties": {}
+              },
+              "max_attempts": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 1000000
+              },
+              "retry_base_seconds": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 300
+              },
+              "repeat_seconds": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 31536000
+              }
+            },
+            "required": [
+              "kind"
+            ],
+            "additionalProperties": false,
+            "$schema": "http://json-schema.org/draft-07/schema#"
+          },
+          "annotations": {
+            "readOnlyHint": false,
+            "destructiveHint": false,
+            "openWorldHint": false
+          },
+          "execution": {
+            "taskSupport": "forbidden"
+          }
+        },
+        {
+          "name": "continuous_jobs",
+          "description": "List recent durable jobs.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "limit": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 200
+              }
+            },
+            "additionalProperties": false,
+            "$schema": "http://json-schema.org/draft-07/schema#"
+          },
+          "annotations": {
+            "readOnlyHint": true,
+            "destructiveHint": false,
+            "openWorldHint": false
+          },
+          "execution": {
+            "taskSupport": "forbidden"
+          }
+        },
+        {
+          "name": "continuous_job_status",
+          "description": "Read one durable job including checkpoint and recent events.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "job_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100
+              }
+            },
+            "required": [
+              "job_id"
+            ],
+            "additionalProperties": false,
+            "$schema": "http://json-schema.org/draft-07/schema#"
+          },
+          "annotations": {
+            "readOnlyHint": true,
+            "destructiveHint": false,
+            "openWorldHint": false
+          },
+          "execution": {
+            "taskSupport": "forbidden"
+          }
+        },
+        {
+          "name": "continuous_job_control",
+          "description": "Pause, resume or cancel a durable job.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "job_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100
+              },
+              "action": {
+                "type": "string",
+                "enum": [
+                  "pause",
+                  "resume",
+                  "cancel"
+                ]
+              }
+            },
+            "required": [
+              "job_id",
+              "action"
+            ],
+            "additionalProperties": false,
+            "$schema": "http://json-schema.org/draft-07/schema#"
+          },
+          "annotations": {
+            "readOnlyHint": false,
+            "destructiveHint": false,
+            "openWorldHint": false
+          },
+          "execution": {
+            "taskSupport": "forbidden"
+          }
+        }
+      ]
+    },
+    "code": {
+      "ok": true,
+      "label": "Code-X",
+      "updated_at": "2026-09-15T20:19:04.228Z",
+      "tools": [
+        {
+          "name": "code_x_status",
+          "description": "Check Code-X runtime and source status.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {},
+            "required": [],
+            "additionalProperties": false
+          }
+        },
+        {
+          "name": "code_x_capabilities",
+          "description": "List executable Code-X capabilities and local runtime availability.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {},
+            "required": [],
+            "additionalProperties": false
+          }
+        },
+        {
+          "name": "code_x_complementarity",
+          "description": "Describe the explicit Code-X/Negin Agent v4 capability ownership and collaboration contract.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {},
+            "required": [],
+            "additionalProperties": false
+          }
+        },
+        {
+          "name": "code_x_route_task",
+          "description": "Route a task between Code-X and Negin Agent v4 using the complementarity contract.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "task": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "task"
+            ],
+            "additionalProperties": false
+          }
+        },
+        {
+          "name": "code_x_handoff_to_negin",
+          "description": "Create a structured handoff packet for Negin Agent v4 without making a network call.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "task": {
+                "type": "string"
+              },
+              "reason": {
+                "type": "string"
+              },
+              "requested_capability": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "task"
+            ],
+            "additionalProperties": false
+          }
+        },
+        {
+          "name": "code_x_skill_catalog",
+          "description": "List or filter installed coding skills.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "query": {
+                "type": "string"
+              }
+            },
+            "required": [],
+            "additionalProperties": false
+          }
+        },
+        {
+          "name": "code_x_skill_resolve",
+          "description": "Resolve a coding task to the most relevant installed skills.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "task": {
+                "type": "string"
+              },
+              "limit": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 10
+              }
+            },
+            "required": [
+              "task"
+            ],
+            "additionalProperties": false
+          }
+        },
+        {
+          "name": "code_x_skill_get",
+          "description": "Load one exact skill before specialist work.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "name"
+            ],
+            "additionalProperties": false
+          }
+        },
+        {
+          "name": "code_x_repo_search",
+          "description": "Search source text inside the Code-X repository.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "query": {
+                "type": "string"
+              },
+              "max_results": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 500
+              }
+            },
+            "required": [
+              "query"
+            ],
+            "additionalProperties": false
+          }
+        },
+        {
+          "name": "code_x_repo_read",
+          "description": "Read a bounded source file range inside the repository.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "path": {
+                "type": "string"
+              },
+              "start_line": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "end_line": {
+                "type": "integer",
+                "minimum": 1
+              }
+            },
+            "required": [
+              "path"
+            ],
+            "additionalProperties": false
+          }
+        },
+        {
+          "name": "code_x_shell_checked_sequence",
+          "description": "Run guarded local coding/build/test commands as independently verified steps.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "steps": {
+                "type": "array",
+                "items": {
+                  "type": "object"
+                },
+                "minItems": 1,
+                "maxItems": 30
+              },
+              "stop_on_error": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "steps"
+            ],
+            "additionalProperties": false
+          }
+        },
+        {
+          "name": "code_x_exec_start",
+          "description": "Start a safe detached durable shell job and return immediately.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "command": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 20000
+              },
+              "cwd": {
+                "type": "string"
+              },
+              "shell": {
+                "type": "string",
+                "enum": [
+                  "powershell",
+                  "cmd"
+                ]
+              },
+              "timeout_class": {
+                "type": "string",
+                "enum": [
+                  "probe",
+                  "service",
+                  "build",
+                  "install",
+                  "persistent"
+                ]
+              },
+              "max_retries": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 2
+              }
+            },
+            "required": [
+              "command"
+            ],
+            "additionalProperties": false
+          }
+        },
+        {
+          "name": "code_x_exec_status",
+          "description": "Read durable detached job status, heartbeat and watchdog metadata.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "job_id": {
+                "type": "string",
+                "minLength": 32,
+                "maxLength": 32
+              }
+            },
+            "required": [
+              "job_id"
+            ],
+            "additionalProperties": false
+          }
+        },
+        {
+          "name": "code_x_exec_logs",
+          "description": "Read bounded stdout/stderr tails for a durable detached job.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "job_id": {
+                "type": "string",
+                "minLength": 32,
+                "maxLength": 32
+              },
+              "max_chars": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 100000
+              }
+            },
+            "required": [
+              "job_id"
+            ],
+            "additionalProperties": false
+          }
+        },
+        {
+          "name": "code_x_exec_cancel",
+          "description": "Cancel only a process tree owned by the Code-X remote execution registry.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "job_id": {
+                "type": "string",
+                "minLength": 32,
+                "maxLength": 32
+              }
+            },
+            "required": [
+              "job_id"
+            ],
+            "additionalProperties": false
+          }
+        },
+        {
+          "name": "code_x_exec_session_open",
+          "description": "Open a guarded runtime-local interactive PowerShell or CMD session.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "cwd": {
+                "type": "string"
+              },
+              "shell": {
+                "type": "string",
+                "enum": [
+                  "powershell",
+                  "cmd"
+                ]
+              }
+            },
+            "required": [],
+            "additionalProperties": false
+          }
+        },
+        {
+          "name": "code_x_exec_session_write",
+          "description": "Write one validated command to a Code-X-owned interactive shell session.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "session_id": {
+                "type": "string",
+                "minLength": 32,
+                "maxLength": 32
+              },
+              "command": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 20000
+              }
+            },
+            "required": [
+              "session_id",
+              "command"
+            ],
+            "additionalProperties": false
+          }
+        },
+        {
+          "name": "code_x_exec_session_read",
+          "description": "Read bounded buffered output from a runtime-local interactive shell session.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "session_id": {
+                "type": "string",
+                "minLength": 32,
+                "maxLength": 32
+              },
+              "max_chars": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 100000
+              },
+              "clear": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "session_id"
+            ],
+            "additionalProperties": false
+          }
+        },
+        {
+          "name": "code_x_exec_session_close",
+          "description": "Close only a Code-X-owned interactive shell session.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "session_id": {
+                "type": "string",
+                "minLength": 32,
+                "maxLength": 32
+              }
+            },
+            "required": [
+              "session_id"
+            ],
+            "additionalProperties": false
+          }
+        },
+        {
+          "name": "code_x_verify",
+          "description": "Verify completion from explicit assertions and evidence.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "task_id": {
+                "type": "string"
+              },
+              "steps": {
+                "type": "array",
+                "items": {
+                  "type": "object"
+                }
+              },
+              "require_all_steps": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "task_id",
+              "steps"
+            ],
+            "additionalProperties": false
+          }
+        },
+        {
+          "name": "code_x_coding_task",
+          "description": "Run a coding task with the configured Codex engine and existing Codex/ChatGPT login.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "prompt": {
+                "type": "string"
+              },
+              "cwd": {
+                "type": "string"
+              },
+              "timeout": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 120
+              },
+              "model": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128
+              },
+              "reasoning_effort": {
+                "type": "string",
+                "enum": [
+                  "low",
+                  "medium",
+                  "high",
+                  "xhigh",
+                  "max"
+                ]
+              },
+              "context_management": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "prompt"
+            ],
+            "additionalProperties": false
+          }
+        },
+        {
+          "name": "code_x_session_resume",
+          "description": "Resume a Codex session in a validated workspace.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "session_id": {
+                "type": "string"
+              },
+              "prompt": {
+                "type": "string"
+              },
+              "cwd": {
+                "type": "string"
+              },
+              "timeout": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 120
+              },
+              "model": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128
+              },
+              "reasoning_effort": {
+                "type": "string",
+                "enum": [
+                  "low",
+                  "medium",
+                  "high",
+                  "xhigh",
+                  "max"
+                ]
+              },
+              "context_management": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "session_id",
+              "prompt"
+            ],
+            "additionalProperties": false
+          }
+        },
+        {
+          "name": "code_x_session_steer",
+          "description": "Queue instructions for an existing Codex session, including during an active turn.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "session_id": {
+                "type": "string"
+              },
+              "message": {
+                "type": "string"
+              },
+              "cwd": {
+                "type": "string"
+              },
+              "timeout": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 30
+              }
+            },
+            "required": [
+              "session_id",
+              "message"
+            ],
+            "additionalProperties": false
+          }
+        },
+        {
+          "name": "code_x_job_submit",
+          "description": "Create a durable local Code-X job record for a supported background-safe task.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "repo_audit",
+                  "test_plan"
+                ]
+              },
+              "payload": {
+                "type": "object"
+              }
+            },
+            "required": [
+              "kind"
+            ],
+            "additionalProperties": false
+          }
+        },
+        {
+          "name": "code_x_jobs",
+          "description": "List durable Code-X jobs.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "limit": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 200
+              }
+            },
+            "required": [],
+            "additionalProperties": false
+          }
+        },
+        {
+          "name": "code_x_job_status",
+          "description": "Read one durable Code-X job record.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "job_id": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "job_id"
+            ],
+            "additionalProperties": false
+          }
+        }
+      ]
+    },
+    "ux": {
+      "ok": true,
+      "label": "UX-X",
+      "updated_at": "2026-09-15T20:19:04.230Z",
+      "tools": [
+        {
+          "name": "ux_status",
+          "description": "Check UX-X design-authority runtime, security mode and capabilities.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": false
+          }
+        },
+        {
+          "name": "ux_project_scan",
+          "description": "Read-only scan of a frontend repository and detected UI stack.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "root": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "root"
+            ],
+            "additionalProperties": false
+          }
+        },
+        {
+          "name": "ux_project_manifest",
+          "description": "Read package scripts, dependency inventory and UI entry hints without modifying the repository.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "root": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "root"
+            ],
+            "additionalProperties": false
+          }
+        },
+        {
+          "name": "ux_component_inventory",
+          "description": "Inventory UI files and detectable component families across legacy and component-based frontends.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "root": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "root"
+            ],
+            "additionalProperties": false
+          }
+        },
+        {
+          "name": "ux_design_system_audit",
+          "description": "Audit CSS tokenization, color/spacing/radius/font literals, breakpoints, focus-visible, RTL and reduced-motion signals.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "root": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "root"
+            ],
+            "additionalProperties": false
+          }
+        },
+        {
+          "name": "ux_audit",
+          "description": "Static read-only UI/UX heuristic audit for responsiveness, accessibility and component quality.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "root": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "root"
+            ],
+            "additionalProperties": false
+          }
+        },
+        {
+          "name": "ux_runtime_preflight",
+          "description": "Check whether the project has the local Playwright/axe prerequisites for rendered QA.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "root": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "root"
+            ],
+            "additionalProperties": false
+          }
+        },
+        {
+          "name": "ux_runtime_audit",
+          "description": "Run allowlisted rendered Playwright QA on mobile and desktop, capturing overflow, console errors, axe findings and screenshots outside the project.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "root": {
+                "type": "string"
+              },
+              "url": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "root",
+              "url"
+            ],
+            "additionalProperties": false
+          }
+        },
+        {
+          "name": "ux_test_plan",
+          "description": "Generate the deterministic responsive/accessibility/interaction test matrix.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "root": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "root"
+            ],
+            "additionalProperties": false
+          }
+        },
+        {
+          "name": "ux_quality_gate",
+          "description": "Apply UX-X release gates. Without a runtime URL, rendered gates are BLOCKED rather than falsely passing.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "root": {
+                "type": "string"
+              },
+              "url": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "root"
+            ],
+            "additionalProperties": false
+          }
+        },
+        {
+          "name": "ux_change_spec",
+          "description": "Generate a prioritized P0/P1 change specification for Code-X, preserving the target project visual identity unless redesign is explicit.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "root": {
+                "type": "string"
+              },
+              "url": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "root"
+            ],
+            "additionalProperties": false
+          }
+        },
+        {
+          "name": "ux_kit_catalog",
+          "description": "Return UX-X's curated professional UI/UX kit catalog. Advisory only; never installs packages.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": false
+          }
+        },
+        {
+          "name": "ux_kit_recommend",
+          "description": "Recommend compatible UI/UX kits for a scanned project while preserving the existing component system. Read-only.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "root": {
+                "type": "string"
+              },
+              "context": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "root"
+            ],
+            "additionalProperties": false
+          }
+        },
+        {
+          "name": "ux_research_skill_catalog",
+          "description": "List UX-X external design-research skills (Dribbble, Mobbin, Behance) and their guardrails.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": false
+          }
+        },
+        {
+          "name": "ux_research_skill_get",
+          "description": "Get one UX-X external design-research skill by id.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "enum": [
+                  "dribbble",
+                  "mobbin",
+                  "behance"
+                ]
+              }
+            },
+            "required": [
+              "id"
+            ],
+            "additionalProperties": false
+          }
+        },
+        {
+          "name": "ux_research_skill_resolve",
+          "description": "Rank UX-X external design-research skills for a design-research context.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "context": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "context"
+            ],
+            "additionalProperties": false
+          }
+        },
+        {
+          "name": "ux_safe_patch_plan",
+          "description": "Return a reversible patch plan only. Never writes repository files.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "root": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "root"
+            ],
+            "additionalProperties": false
+          }
+        },
+        {
+          "name": "ux_skill_catalog",
+          "description": "List project-local NeginAI skills routed to UX-X.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "query": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        {
+          "name": "ux_skill_get",
+          "description": "Load one exact project-local NeginAI skill routed to UX-X.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "name"
+            ],
+            "additionalProperties": false
+          }
+        },
+        {
+          "name": "ux_skill_resolve",
+          "description": "Resolve a UX-X task to the most relevant project-local NeginAI skills.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "task": {
+                "type": "string"
+              },
+              "limit": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 10
+              }
+            },
+            "required": [
+              "task"
+            ],
+            "additionalProperties": false
+          }
+        }
+      ]
+    },
+    "data": {
+      "ok": true,
+      "label": "Data-X",
+      "updated_at": "2026-09-15T20:19:04.232Z",
+      "tools": [
+        {
+          "name": "data_x_status",
+          "description": "Runtime, safety boundaries and operational live-data mode.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {},
+            "required": [],
+            "additionalProperties": false
+          }
+        },
+        {
+          "name": "data_x_contract",
+          "description": "Ownership/routing contract.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {},
+            "required": [],
+            "additionalProperties": false
+          }
+        },
+        {
+          "name": "data_x_capabilities",
+          "description": "List analytical and live read-only capabilities.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {},
+            "required": [],
+            "additionalProperties": false
+          }
+        },
+        {
+          "name": "data_x_quality_gate",
+          "description": "Evaluate evidence readiness.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "evidence": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": [],
+            "additionalProperties": false
+          }
+        },
+        {
+          "name": "data_x_handoff",
+          "description": "Create bounded handoff.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "to": {
+                "type": "string",
+                "enum": [
+                  "Negin-Master",
+                  "Code-X"
+                ]
+              },
+              "task": {
+                "type": "string"
+              },
+              "reason": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "to",
+              "task"
+            ],
+            "additionalProperties": false
+          }
+        },
+        {
+          "name": "data_x_live_health",
+          "description": "Check Enterprise Core and strict read-only SQL health.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {},
+            "required": [],
+            "additionalProperties": false
+          }
+        },
+        {
+          "name": "data_x_semantic_resolve",
+          "description": "Resolve organizational/business language against the canonical semantic source before KPI work.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "text": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "text"
+            ],
+            "additionalProperties": false
+          }
+        },
+        {
+          "name": "data_x_sql_readonly_health",
+          "description": "Verify live SQL connectivity and strict read-only identity.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {},
+            "required": [],
+            "additionalProperties": false
+          }
+        },
+        {
+          "name": "data_x_varanegar_schema_search",
+          "description": "Search live Varanegar SQL catalog by terms without scanning business data.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "terms": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "minItems": 1,
+                "maxItems": 12
+              },
+              "max_rows": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 2000
+              }
+            },
+            "required": [
+              "terms"
+            ],
+            "additionalProperties": false
+          }
+        },
+        {
+          "name": "data_x_sql_readonly_query",
+          "description": "Run one bounded live SELECT/CTE through Negin_Report_ReadOnly with a second local firewall.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "sql": {
+                "type": "string"
+              },
+              "max_rows": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 5000
+              }
+            },
+            "required": [
+              "sql"
+            ],
+            "additionalProperties": false
+          }
+        },
+        {
+          "name": "data_x_dataset_profile",
+          "description": "Profile local CSV/JSON read-only.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "path": {
+                "type": "string"
+              },
+              "max_rows": {
+                "type": "integer"
+              }
+            },
+            "required": [
+              "path"
+            ],
+            "additionalProperties": false
+          }
+        },
+        {
+          "name": "data_x_schema_infer",
+          "description": "Infer local dataset schema.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "path": {
+                "type": "string"
+              },
+              "max_rows": {
+                "type": "integer"
+              }
+            },
+            "required": [
+              "path"
+            ],
+            "additionalProperties": false
+          }
+        },
+        {
+          "name": "data_x_data_quality_audit",
+          "description": "Audit local data quality.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "path": {
+                "type": "string"
+              },
+              "max_rows": {
+                "type": "integer"
+              }
+            },
+            "required": [
+              "path"
+            ],
+            "additionalProperties": false
+          }
+        },
+        {
+          "name": "data_x_dataset_compare",
+          "description": "Compare two local datasets.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "left_path": {
+                "type": "string"
+              },
+              "right_path": {
+                "type": "string"
+              },
+              "max_rows": {
+                "type": "integer"
+              }
+            },
+            "required": [
+              "left_path",
+              "right_path"
+            ],
+            "additionalProperties": false
+          }
+        },
+        {
+          "name": "data_x_analysis_plan",
+          "description": "Design analysis.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "objective": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "objective"
+            ],
+            "additionalProperties": false
+          }
+        },
+        {
+          "name": "data_x_anomaly_plan",
+          "description": "Design layered anomaly detection.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "fields": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": [],
+            "additionalProperties": false
+          }
+        },
+        {
+          "name": "data_x_forecast_plan",
+          "description": "Design forecast/backtest.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "target": {
+                "type": "string"
+              },
+              "time_field": {
+                "type": "string"
+              },
+              "horizon": {}
+            },
+            "required": [
+              "target",
+              "time_field",
+              "horizon"
+            ],
+            "additionalProperties": false
+          }
+        },
+        {
+          "name": "data_x_time_series_health",
+          "description": "Design time-series health checks.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "time_field": {
+                "type": "string"
+              },
+              "value_field": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "time_field",
+              "value_field"
+            ],
+            "additionalProperties": false
+          }
+        },
+        {
+          "name": "data_x_kpi_validation_spec",
+          "description": "Validate candidate KPI against supplied canonical definition.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "canonical_definition": {
+                "type": "string"
+              },
+              "candidate_formula": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "canonical_definition",
+              "candidate_formula"
+            ],
+            "additionalProperties": false
+          }
+        },
+        {
+          "name": "data_x_kpi_reconciliation_plan",
+          "description": "Plan KPI reconciliation.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "canonical_definition": {
+                "type": "string"
+              },
+              "candidate_definition": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "canonical_definition",
+              "candidate_definition"
+            ],
+            "additionalProperties": false
+          }
+        },
+        {
+          "name": "data_x_skill_catalog",
+          "description": "List project-local NeginAI skills routed to Data-X.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "query": {
+                "type": "string"
+              }
+            },
+            "required": [],
+            "additionalProperties": false
+          }
+        },
+        {
+          "name": "data_x_skill_get",
+          "description": "Load one exact project-local NeginAI skill routed to Data-X.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "name"
+            ],
+            "additionalProperties": false
+          }
+        },
+        {
+          "name": "data_x_skill_resolve",
+          "description": "Resolve a Data-X task to the most relevant project-local NeginAI skills.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "task": {
+                "type": "string"
+              },
+              "limit": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 10
+              }
+            },
+            "required": [
+              "task"
+            ],
+            "additionalProperties": false
+          }
+        }
+      ]
+    },
+    "automation": {
+      "ok": true,
+      "label": "Automation-X",
+      "updated_at": "2026-09-15T20:19:04.233Z",
+      "tools": [
+        {
+          "name": "automation_x_status",
+          "description": "Runtime, safety boundaries and operational workflow mode.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {},
+            "required": [],
+            "additionalProperties": false
+          }
+        },
+        {
+          "name": "automation_x_contract",
+          "description": "Ownership/routing contract.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {},
+            "required": [],
+            "additionalProperties": false
+          }
+        },
+        {
+          "name": "automation_x_capabilities",
+          "description": "List automation capabilities.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {},
+            "required": [],
+            "additionalProperties": false
+          }
+        },
+        {
+          "name": "automation_x_quality_gate",
+          "description": "Evaluate workflow readiness.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "evidence": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": [],
+            "additionalProperties": false
+          }
+        },
+        {
+          "name": "automation_x_handoff",
+          "description": "Create bounded handoff.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "to": {
+                "type": "string",
+                "enum": [
+                  "Negin-Master",
+                  "Code-X"
+                ]
+              },
+              "task": {
+                "type": "string"
+              },
+              "reason": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "to",
+              "task"
+            ],
+            "additionalProperties": false
+          }
+        },
+        {
+          "name": "automation_x_live_health",
+          "description": "Check Enterprise Core, n8n and Airflow local runtime health.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {},
+            "required": [],
+            "additionalProperties": false
+          }
+        },
+        {
+          "name": "automation_x_n8n_list",
+          "description": "List live n8n workflows through the guarded Enterprise Core.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "limit": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 100
+              },
+              "cursor": {
+                "type": "string"
+              },
+              "include_credential_refs": {
+                "type": "boolean"
+              }
+            },
+            "required": [],
+            "additionalProperties": false
+          }
+        },
+        {
+          "name": "automation_x_n8n_get",
+          "description": "Read one live n8n workflow through the guarded Enterprise Core.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "workflow_id": {
+                "type": "string"
+              },
+              "include_credential_refs": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "workflow_id"
+            ],
+            "additionalProperties": false
+          }
+        },
+        {
+          "name": "automation_x_n8n_validate",
+          "description": "Validate an inline or existing n8n workflow before mutation.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "workflow_id": {
+                "type": "string"
+              },
+              "workflow": {
+                "type": "object"
+              },
+              "allow_risky_nodes": {
+                "type": "boolean"
+              }
+            },
+            "required": [],
+            "additionalProperties": false
+          }
+        },
+        {
+          "name": "automation_x_n8n_manage",
+          "description": "Create/update/activate/deactivate/import/delete a local n8n workflow through safety gates. owner_approved=true is mandatory; delete also requires confirm_destructive=true.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "action": {
+                "type": "string",
+                "enum": [
+                  "create",
+                  "update",
+                  "activate",
+                  "deactivate",
+                  "delete",
+                  "import"
+                ]
+              },
+              "workflow_id": {
+                "type": "string"
+              },
+              "workflow": {
+                "type": "object"
+              },
+              "allow_risky_nodes": {
+                "type": "boolean"
+              },
+              "confirm_destructive": {
+                "type": "boolean"
+              },
+              "owner_approved": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "action",
+              "owner_approved"
+            ],
+            "additionalProperties": false
+          }
+        },
+        {
+          "name": "automation_x_n8n_webhook",
+          "description": "Execute a local n8n webhook. owner_approved=true is mandatory because the workflow may have side effects.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "path": {
+                "type": "string"
+              },
+              "method": {
+                "type": "string",
+                "enum": [
+                  "GET",
+                  "POST"
+                ]
+              },
+              "payload": {
+                "type": "object"
+              },
+              "owner_approved": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "path",
+              "owner_approved"
+            ],
+            "additionalProperties": false
+          }
+        },
+        {
+          "name": "automation_x_airflow_health",
+          "description": "Check the local Airflow API without changing DAG state.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {},
+            "required": [],
+            "additionalProperties": false
+          }
+        },
+        {
+          "name": "automation_x_airflow_dags_list",
+          "description": "List Airflow DAGs read-only.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "limit": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 200
+              },
+              "offset": {
+                "type": "integer",
+                "minimum": 0
+              }
+            },
+            "required": [],
+            "additionalProperties": false
+          }
+        },
+        {
+          "name": "automation_x_airflow_dag_get",
+          "description": "Read one Airflow DAG read-only.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "dag_id": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "dag_id"
+            ],
+            "additionalProperties": false
+          }
+        },
+        {
+          "name": "automation_x_airflow_dag_trigger",
+          "description": "Trigger one local Airflow DAG run. owner_approved=true is mandatory.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "dag_id": {
+                "type": "string"
+              },
+              "conf": {
+                "type": "object"
+              },
+              "owner_approved": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "dag_id",
+              "owner_approved"
+            ],
+            "additionalProperties": false
+          }
+        },
+        {
+          "name": "automation_x_airflow_dag_pause",
+          "description": "Pause or unpause one local Airflow DAG. owner_approved=true is mandatory.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "dag_id": {
+                "type": "string"
+              },
+              "is_paused": {
+                "type": "boolean"
+              },
+              "owner_approved": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "dag_id",
+              "is_paused",
+              "owner_approved"
+            ],
+            "additionalProperties": false
+          }
+        },
+        {
+          "name": "automation_x_project_scan",
+          "description": "Scan automation artifacts read-only.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "root": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "root"
+            ],
+            "additionalProperties": false
+          }
+        },
+        {
+          "name": "automation_x_n8n_audit",
+          "description": "Audit exported n8n workflow JSON read-only.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "path": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "path"
+            ],
+            "additionalProperties": false
+          }
+        },
+        {
+          "name": "automation_x_airflow_audit",
+          "description": "Audit Airflow DAG source read-only.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "path": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "path"
+            ],
+            "additionalProperties": false
+          }
+        },
+        {
+          "name": "automation_x_integration_plan",
+          "description": "Design reliable workflow.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "goal": {
+                "type": "string"
+              },
+              "systems": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": [
+              "goal"
+            ],
+            "additionalProperties": false
+          }
+        },
+        {
+          "name": "automation_x_api_contract_review",
+          "description": "Review API/webhook reliability.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "endpoints": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": [],
+            "additionalProperties": false
+          }
+        },
+        {
+          "name": "automation_x_idempotency_review",
+          "description": "Review idempotency design.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "strategy": {
+                "type": "string"
+              },
+              "side_effects": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": [],
+            "additionalProperties": false
+          }
+        },
+        {
+          "name": "automation_x_retry_policy_review",
+          "description": "Review retry/backoff policy.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "policy": {
+                "type": "string"
+              }
+            },
+            "required": [],
+            "additionalProperties": false
+          }
+        },
+        {
+          "name": "automation_x_observability_plan",
+          "description": "Design workflow observability.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "workflow": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "workflow"
+            ],
+            "additionalProperties": false
+          }
+        },
+        {
+          "name": "automation_x_workflow_risk_matrix",
+          "description": "Create workflow risk matrix.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "steps": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": [],
+            "additionalProperties": false
+          }
+        },
+        {
+          "name": "automation_x_runbook_plan",
+          "description": "Create operator runbook plan.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "workflow": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "workflow"
+            ],
+            "additionalProperties": false
+          }
+        },
+        {
+          "name": "automation_x_skill_catalog",
+          "description": "List project-local NeginAI skills routed to Automation-X.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "query": {
+                "type": "string"
+              }
+            },
+            "required": [],
+            "additionalProperties": false
+          }
+        },
+        {
+          "name": "automation_x_skill_get",
+          "description": "Load one exact project-local NeginAI skill routed to Automation-X.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "name"
+            ],
+            "additionalProperties": false
+          }
+        },
+        {
+          "name": "automation_x_skill_resolve",
+          "description": "Resolve an Automation-X task to the most relevant project-local NeginAI skills.",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "task": {
+                "type": "string"
+              },
+              "limit": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 10
+              }
+            },
+            "required": [
+              "task"
+            ],
+            "additionalProperties": false
+          }
+        }
+      ]
+    }
+  }
+}

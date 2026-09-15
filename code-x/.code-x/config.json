@@ -1,0 +1,21 @@
+{
+  "name": "code-x",
+  "version": "0.2.0",
+  "source_root": "/app/code-x",
+  "codex_command": [],
+  "security": {
+    "allowed_roots": ["/app/code-x"],
+    "max_output_chars": 40000,
+    "max_command_seconds": 120,
+    "allow_network_commands": true
+  },
+  "mcp": {
+    "host": "0.0.0.0",
+    "port": 8777,
+    "bearer_token": "25df9b25625a32bcd014784da8def55b10ce86e8b3e23161",
+    "require_auth": true
+  },
+  "default_model": "gpt-6-astra",
+  "default_reasoning_effort": "medium",
+  "context_management_experimental": true
+}

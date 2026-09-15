@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Negin Agents — Unified Gateway</title>
+<style>
+  :root {
+    --bg: #0f1117;
+    --card: #1a1d27;
+    --border: #2a2e3a;
+    --text: #e4e6eb;
+    --muted: #8b8f9e;
+    --green: #3fb950;
+    --red: #f85149;
+    --yellow: #d29922;
+    --blue: #58a6ff;
+    --radius: 12px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 24px;
+  }
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 28px;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  h1 { font-size: 1.6rem; font-weight: 700; }
+  .subtitle { color: var(--muted); font-size: .9rem; margin-top: 4px; }
+  .header-actions { display: flex; gap: 10px; align-items: center; }
+  .btn {
+    background: var(--card);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: .85rem;
+    transition: border-color .2s;
+  }
+  .btn:hover { border-color: var(--blue); }
+  .status-dot {
+    width: 10px; height: 10px; border-radius: 50%;
+    display: inline-block;
+  }
+  .dot-ok { background: var(--green); }
+  .dot-down { background: var(--red); }
+  .dot-partial { background: var(--yellow); }
+  .overview {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px 24px;
+    margin-bottom: 24px;
+  }
+  .overview .big { font-size: 1.8rem; font-weight: 700; }
+  .overview .label { color: var(--muted); font-size: .85rem; }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 16px;
+  }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    transition: border-color .2s;
+  }
+  .card:hover { border-color: #3a3e4a; }
+  .card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+  }
+  .card-title { font-size: 1.1rem; font-weight: 600; }
+  .badge {
+    font-size: .75rem;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-weight: 600;
+  }
+  .badge-ok { background: rgba(63,185,80,.15); color: var(--green); }
+  .badge-down { background: rgba(248,81,73,.15); color: var(--red); }
+  .badge-partial { background: rgba(210,153,34,.15); color: var(--yellow); }
+  .stat-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+    font-size: .85rem;
+  }
+  .stat-row .key { color: var(--muted); }
+  .stat-row .val { font-weight: 500; }
+  .tools-section { margin-top: 24px; }
+  .tools-section h2 { font-size: 1.1rem; margin-bottom: 14px; }
+  .tool-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 8px;
+  }
+  .tool-item {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: .82rem;
+  }
+  .tool-item .tool-name { font-weight: 600; color: var(--blue); }
+  .tool-item .tool-desc { color: var(--muted); margin-top: 3px; font-size: .78rem; }
+  .tool-item .tool-agent {
+    display: inline-block;
+    font-size: .7rem;
+    padding: 1px 7px;
+    border-radius: 4px;
+    background: rgba(88,166,255,.12);
+    color: var(--blue);
+    margin-bottom: 4px;
+  }
+  .loading { text-align: center; padding: 40px; color: var(--muted); }
+  .error { color: var(--red); }
+  .refresh-spin { animation: spin 1s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <h1>Negin Agents — Unified Gateway</h1>
+    <div class="subtitle">Multi-agent MCP control plane · 5 agents behind a single gateway</div>
+  </div>
+  <div class="header-actions">
+    <span id="last-refresh" class="subtitle"></span>
+    <button class="btn" id="refresh-tools" onclick="refreshTools()">↻ Refresh Tools</button>
+    <button class="btn" id="reload" onclick="loadStatus()">⟳ Status</button>
+  </div>
+</header>
+
+<div id="overview" class="overview">
+  <span class="status-dot dot-down" id="overview-dot"></span>
+  <span class="big" id="overview-count">—</span>
+  <span class="label">agents healthy</span>
+</div>
+
+<div id="agents" class="grid">
+  <div class="loading">Loading agent status…</div>
+</div>
+
+<div class="tools-section">
+  <h2>Gateway Tools <span id="tool-count" class="subtitle"></span></h2>
+  <div id="tools" class="tool-list">
+    <div class="loading">Click “Refresh Tools” to load tool catalog.</div>
+  </div>
+</div>
+
+<script>
+async function loadStatus() {
+  try {
+    const res = await fetch("/api/status");
+    const data = await res.json();
+    renderStatus(data);
+  } catch (e) {
+    document.getElementById("agents").innerHTML = '<div class="loading error">Failed to reach gateway. Is it running?</div>';
+    document.getElementById("overview-dot").className = "status-dot dot-down";
+    document.getElementById("overview-count").textContent = "!";
+  }
+  document.getElementById("last-refresh").textContent = "Updated " + new Date().toLocaleTimeString();
+}
+
+function renderStatus(data) {
+  const ok = data.ok;
+  const healthy = data.healthy_agents ?? 0;
+  const total = data.total_agents ?? 0;
+  const dot = document.getElementById("overview-dot");
+  dot.className = "status-dot " + (ok ? "dot-ok" : (healthy > 0 ? "dot-partial" : "dot-down"));
+  document.getElementById("overview-count").textContent = healthy + "/" + total;
+
+  const agents = data.agents || {};
+  let html = "";
+  for (const [name, info] of Object.entries(agents)) {
+    const healthy = info.ok;
+    const status = info.status || 0;
+    const tokenFound = info.token_discovered;
+    const toolCount = info.cached_tools || 0;
+    const cls = healthy ? "badge-ok" : "badge-down";
+    const label = healthy ? "ONLINE" : "OFFLINE";
+    html += `
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">${name.charAt(0).toUpperCase() + name.slice(1)}</span>
+          <span class="badge ${cls}">${label}</span>
+        </div>
+        <div class="stat-row"><span class="key">Health</span><span class="val">${status || "unreachable"}</span></div>
+        <div class="stat-row"><span class="key">Token discovered</span><span class="val">${tokenFound ? "yes" : "no"}</span></div>
+        <div class="stat-row"><span class="key">Cached tools</span><span class="val">${toolCount}</span></div>
+      </div>`;
+  }
+  document.getElementById("agents").innerHTML = html || '<div class="loading">No agents found.</div>';
+}
+
+async function refreshTools() {
+  const btn = document.getElementById("refresh-tools");
+  btn.classList.add("refresh-spin");
+  btn.disabled = true;
+  try {
+    await fetch("/api/refresh");
+    await loadTools();
+  } catch {}
+  btn.classList.remove("refresh-spin");
+  btn.disabled = false;
+}
+
+async function loadTools() {
+  try {
+    const res = await fetch("/api/tools");
+    const data = await res.json();
+    const tools = (data.result && data.result.tools) || [];
+    document.getElementById("tool-count").textContent = "(" + tools.length + " tools)";
+    let html = "";
+    for (const t of tools) {
+      const desc = (t.description || "").replace(/^\[.*?\]\s*/, "");
+      const agentMatch = (t.description || "").match(/^\[(.*?)\]/);
+      const agent = agentMatch ? agentMatch[1] : "gateway";
+      html += `
+        <div class="tool-item">
+          <div class="tool-agent">${agent}</div>
+          <div class="tool-name">${t.name}</div>
+          <div class="tool-desc">${desc.slice(0, 120)}</div>
+        </div>`;
+    }
+    document.getElementById("tools").innerHTML = html || '<div class="loading">No tools available.</div>';
+  } catch {
+    document.getElementById("tools").innerHTML = '<div class="loading error">Failed to load tools.</div>';
+  }
+}
+
+loadStatus();
+loadTools();
+setInterval(loadStatus, 5000);
+</script>
+</body>
+</html>

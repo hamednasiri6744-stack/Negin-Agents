@@ -1,0 +1,13 @@
+{
+  "host": "0.0.0.0",
+  "port": 8791,
+  "gateway_token": "cd2a7a80347db5894cb3c17227ed8a16b68e64982da888cf",
+  "refresh_seconds": 60,
+  "backends": {
+    "master": { "label": "Negin-Master", "host": "mcp-bridge", "port": 8766, "prefix": "master" },
+    "code": { "label": "Code-X", "host": "code-x", "port": 8777, "prefix": "code" },
+    "ux": { "label": "UX-X", "host": "ux-x", "port": 8780, "prefix": "ux" },
+    "data": { "label": "Data-X", "host": "data-x", "port": 8781, "prefix": "data" },
+    "automation": { "label": "Automation-X", "host": "automation-x", "port": 8782, "prefix": "automation" }
+  }
+}
