@@ -77,6 +77,12 @@ Write-JsonIfMissing (Join-Path $UxRoot '.runtime.json') @{
     host='127.0.0.1'; port=8780; bearer_token=(New-RandomToken); runtime_mode='hot-reload-reconnect-safe'
 }
 
+$AgentSharedRoot = Join-Path $CodeRoot 'agents\shared'
+Ensure-Directory $AgentSharedRoot
+$skillRouter = Join-Path $RepoRoot 'shared\neginai-skill-router.js'
+if (-not (Test-Path $skillRouter)) { throw "Missing shared NeginAI skill router: $skillRouter" }
+if ($DryRun) { Write-Step "DRY RUN copy $skillRouter -> $AgentSharedRoot" } else { Copy-Item $skillRouter (Join-Path $AgentSharedRoot 'neginai-skill-router.js') -Force }
+
 $SpecialistRoot = Join-Path $CodeRoot 'agents\specialist-host'
 Write-Step 'Install Data-X and Automation-X source'
 Ensure-Directory $SpecialistRoot

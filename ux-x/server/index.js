@@ -158,3 +158,35 @@ function callTool(name,args={}){
 
 
 
+
+// --- NeginAI project-local skill routing adapter (reconnect-safe) ---
+const neginaiProjectSkills = require("../../shared/neginai-skill-router");
+const _neginaiUxBaseStatus = status;
+const _neginaiUxBaseToolSchemas = toolSchemas;
+const _neginaiUxBaseCallTool = callTool;
+
+function _neginaiUxSkillSchemas() {
+  return [
+    {name:"ux_skill_catalog",description:"List project-local NeginAI skills routed to UX-X.",inputSchema:{type:"object",properties:{query:{type:"string"}},additionalProperties:false}},
+    {name:"ux_skill_get",description:"Load one exact project-local NeginAI skill routed to UX-X.",inputSchema:{type:"object",properties:{name:{type:"string"}},required:["name"],additionalProperties:false}},
+    {name:"ux_skill_resolve",description:"Resolve a UX-X task to the most relevant project-local NeginAI skills.",inputSchema:{type:"object",properties:{task:{type:"string"},limit:{type:"integer",minimum:1,maximum:10}},required:["task"],additionalProperties:false}}
+  ];
+}
+toolSchemas = function() {
+  return [..._neginaiUxBaseToolSchemas(), ..._neginaiUxSkillSchemas()];
+};
+callTool = function(name,args={}) {
+  if(name==="ux_skill_catalog") return neginaiProjectSkills.catalog("UX-X",args.query||"");
+  if(name==="ux_skill_get") return neginaiProjectSkills.get("UX-X",args.name);
+  if(name==="ux_skill_resolve") return neginaiProjectSkills.resolve("UX-X",args.task||"",args.limit||5);
+  return _neginaiUxBaseCallTool(name,args);
+};
+status = function() {
+  const base=_neginaiUxBaseStatus();
+  const schemas=toolSchemas();
+  return {...base,tool_count:schemas.length,tools:schemas.map(x=>x.name),project_skill_routing:true,skill_root:neginaiProjectSkills.root()};
+};
+module.exports.status=status;
+module.exports.toolSchemas=toolSchemas;
+module.exports.callTool=callTool;
+// mcpHandle/serveHttp/serveStdio resolve the reassigned lexical status/toolSchemas/callTool bindings.

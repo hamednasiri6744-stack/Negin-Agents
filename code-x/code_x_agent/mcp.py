@@ -13,6 +13,7 @@ from .codex_engine import resume_task, run_task, steer_task
 from .config import AgentConfig, REASONING_EFFORTS
 from .jobs import JobStore
 from .repo import read_file, search
+from .remote_exec import RemoteExecManager, TIMEOUT_CLASSES
 from .shell import run_checked_sequence
 from .skills import catalog, get_skill, resolve
 from .verifier import verify
@@ -30,6 +31,7 @@ class CodeXTools:
         self.root = source_root
         self.cfg = cfg
         self.jobs = JobStore(source_root)
+        self.remote_exec = RemoteExecManager(source_root, cfg, owner="code-x")
         self.last_reconnect_sync: dict[str, Any] | None = None
         engine_options = {
             "cwd": {"type": "string"},
@@ -50,6 +52,14 @@ class CodeXTools:
             "code_x_repo_search": ("Search source text inside the Code-X repository.", _schema({"query": {"type": "string"}, "max_results": {"type": "integer", "minimum": 1, "maximum": 500}}, ["query"]), self.repo_search),
             "code_x_repo_read": ("Read a bounded source file range inside the repository.", _schema({"path": {"type": "string"}, "start_line": {"type": "integer", "minimum": 1}, "end_line": {"type": "integer", "minimum": 1}}, ["path"]), self.repo_read),
             "code_x_shell_checked_sequence": ("Run guarded local coding/build/test commands as independently verified steps.", _schema({"steps": {"type": "array", "items": {"type": "object"}, "minItems": 1, "maxItems": 30}, "stop_on_error": {"type": "boolean"}}, ["steps"]), self.shell_sequence),
+            "code_x_exec_start": ("Start a safe detached durable shell job and return immediately.", _schema({"command": {"type": "string", "minLength": 1, "maxLength": 20000}, "cwd": {"type": "string"}, "shell": {"type": "string", "enum": ["powershell", "cmd"]}, "timeout_class": {"type": "string", "enum": list(TIMEOUT_CLASSES)}, "max_retries": {"type": "integer", "minimum": 0, "maximum": 2}}, ["command"]), self.exec_start),
+            "code_x_exec_status": ("Read durable detached job status, heartbeat and watchdog metadata.", _schema({"job_id": {"type": "string", "minLength": 32, "maxLength": 32}}, ["job_id"]), self.exec_status),
+            "code_x_exec_logs": ("Read bounded stdout/stderr tails for a durable detached job.", _schema({"job_id": {"type": "string", "minLength": 32, "maxLength": 32}, "max_chars": {"type": "integer", "minimum": 1, "maximum": 100000}}, ["job_id"]), self.exec_logs),
+            "code_x_exec_cancel": ("Cancel only a process tree owned by the Code-X remote execution registry.", _schema({"job_id": {"type": "string", "minLength": 32, "maxLength": 32}}, ["job_id"]), self.exec_cancel),
+            "code_x_exec_session_open": ("Open a guarded runtime-local interactive PowerShell or CMD session.", _schema({"cwd": {"type": "string"}, "shell": {"type": "string", "enum": ["powershell", "cmd"]}}), self.exec_session_open),
+            "code_x_exec_session_write": ("Write one validated command to a Code-X-owned interactive shell session.", _schema({"session_id": {"type": "string", "minLength": 32, "maxLength": 32}, "command": {"type": "string", "minLength": 1, "maxLength": 20000}}, ["session_id", "command"]), self.exec_session_write),
+            "code_x_exec_session_read": ("Read bounded buffered output from a runtime-local interactive shell session.", _schema({"session_id": {"type": "string", "minLength": 32, "maxLength": 32}, "max_chars": {"type": "integer", "minimum": 1, "maximum": 100000}, "clear": {"type": "boolean"}}, ["session_id"]), self.exec_session_read),
+            "code_x_exec_session_close": ("Close only a Code-X-owned interactive shell session.", _schema({"session_id": {"type": "string", "minLength": 32, "maxLength": 32}}, ["session_id"]), self.exec_session_close),
             "code_x_verify": ("Verify completion from explicit assertions and evidence.", _schema({"task_id": {"type": "string"}, "steps": {"type": "array", "items": {"type": "object"}}, "require_all_steps": {"type": "boolean"}}, ["task_id", "steps"]), self.verify),
             "code_x_coding_task": ("Run a coding task with the configured Codex engine and existing Codex/ChatGPT login.", _schema({"prompt": {"type": "string"}, **engine_options}, ["prompt"]), self.coding_task),
             "code_x_session_resume": ("Resume a Codex session in a validated workspace.", _schema({"session_id": {"type": "string"}, "prompt": {"type": "string"}, **engine_options}, ["session_id", "prompt"]), self.session_resume),
@@ -113,6 +123,43 @@ class CodeXTools:
 
     def shell_sequence(self, args: dict[str, Any]) -> dict[str, Any]:
         return run_checked_sequence(list(args["steps"]), self.cfg, self.root, bool(args.get("stop_on_error", True)))
+
+    def exec_start(self, args: dict[str, Any]) -> dict[str, Any]:
+        return self.remote_exec.start(
+            command=str(args["command"]),
+            cwd=str(args["cwd"]) if args.get("cwd") else None,
+            shell=str(args.get("shell", "powershell")),
+            timeout_class=str(args.get("timeout_class", "service")),
+            max_retries=int(args.get("max_retries", 0)),
+        )
+
+    def exec_status(self, args: dict[str, Any]) -> dict[str, Any]:
+        return self.remote_exec.status(str(args["job_id"]))
+
+    def exec_logs(self, args: dict[str, Any]) -> dict[str, Any]:
+        return self.remote_exec.logs(str(args["job_id"]), int(args.get("max_chars", 20000)))
+
+    def exec_cancel(self, args: dict[str, Any]) -> dict[str, Any]:
+        return self.remote_exec.cancel(str(args["job_id"]))
+
+    def exec_session_open(self, args: dict[str, Any]) -> dict[str, Any]:
+        return self.remote_exec.session_open(
+            cwd=str(args["cwd"]) if args.get("cwd") else None,
+            shell=str(args.get("shell", "powershell")),
+        )
+
+    def exec_session_write(self, args: dict[str, Any]) -> dict[str, Any]:
+        return self.remote_exec.session_write(str(args["session_id"]), str(args["command"]))
+
+    def exec_session_read(self, args: dict[str, Any]) -> dict[str, Any]:
+        return self.remote_exec.session_read(
+            str(args["session_id"]),
+            int(args.get("max_chars", 20000)),
+            bool(args.get("clear", True)),
+        )
+
+    def exec_session_close(self, args: dict[str, Any]) -> dict[str, Any]:
+        return self.remote_exec.session_close(str(args["session_id"]))
 
     def verify(self, args: dict[str, Any]) -> dict[str, Any]:
         return verify(str(args["task_id"]), list(args["steps"]), bool(args.get("require_all_steps", True)))

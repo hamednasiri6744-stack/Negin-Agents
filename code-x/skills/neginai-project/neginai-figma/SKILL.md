@@ -1,6 +1,7 @@
 ---
 name: neginai-figma
 description: "NeginAI Figma variables tokens components variants auto layout dev mode visual QA design system. فیگما دیزاین سیستم توکن کامپوننت وریبل پروتوتایپ"
+license: MIT
 ---
 # NeginAI Figma
 
@@ -19,4 +20,4 @@ Use the local capability client at `skills/_shared/scripts/local-mcp-client.mjs`
 Read `references/figma-x-runtime.md` when Figma execution is required.
 
 ## Done
-No Figma task is COMPLETE without inspect/evidence of the affected node(s), token/component mapping where relevant, and visual QA status.
+No Figma task is COMPLETE without inspect/evidence of the affected node(s), design-system variable/component mapping where relevant, and visual QA status.

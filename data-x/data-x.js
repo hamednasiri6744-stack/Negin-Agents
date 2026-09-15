@@ -125,3 +125,31 @@ async function call(c,n,a,h){
   throw Error('unknown_tool');
 }
 module.exports={tools,call};
+
+// --- NeginAI project-local skill routing adapter (hot-reload/reconnect-safe) ---
+const neginaiProjectSkills = require("../shared/neginai-skill-router");
+const _neginaiDataBaseTools = tools;
+const _neginaiDataBaseCall = call;
+function _neginaiDataSkillTools(){
+  return [
+    T("data_x_skill_catalog","List project-local NeginAI skills routed to Data-X.",{query:{type:"string"}}),
+    T("data_x_skill_get","Load one exact project-local NeginAI skill routed to Data-X.",{name:{type:"string"}},["name"]),
+    T("data_x_skill_resolve","Resolve a Data-X task to the most relevant project-local NeginAI skills.",{task:{type:"string"},limit:{type:"integer",minimum:1,maximum:10}},["task"])
+  ];
+}
+function _neginaiDataTools(){ return [..._neginaiDataBaseTools(),..._neginaiDataSkillTools()]; }
+async function _neginaiDataCall(c,n,a,h){
+  if(n==="data_x_skill_catalog") return neginaiProjectSkills.catalog("Data-X",a.query||"");
+  if(n==="data_x_skill_get") return neginaiProjectSkills.get("Data-X",a.name);
+  if(n==="data_x_skill_resolve") return neginaiProjectSkills.resolve("Data-X",a.task||"",a.limit||5);
+  if(n==="data_x_status"){
+    const r=await _neginaiDataBaseCall(c,n,a,h);
+    return {...r,tool_count:_neginaiDataTools().length,project_skill_routing:true,skill_root:neginaiProjectSkills.root()};
+  }
+  if(n==="data_x_capabilities"){
+    const r=await _neginaiDataBaseCall(c,n,a,h);
+    return {...r,capabilities:_neginaiDataTools().map(x=>x.name),project_skill_routing:true};
+  }
+  return _neginaiDataBaseCall(c,n,a,h);
+}
+module.exports={tools:_neginaiDataTools,call:_neginaiDataCall};

@@ -225,3 +225,31 @@ async function call(c,n,a,h){
   throw Error('unknown_tool');
 }
 module.exports={tools,call};
+
+// --- NeginAI project-local skill routing adapter (hot-reload/reconnect-safe) ---
+const neginaiProjectSkills = require("../shared/neginai-skill-router");
+const _neginaiAutomationBaseTools = tools;
+const _neginaiAutomationBaseCall = call;
+function _neginaiAutomationSkillTools(){
+  return [
+    T("automation_x_skill_catalog","List project-local NeginAI skills routed to Automation-X.",{query:{type:"string"}}),
+    T("automation_x_skill_get","Load one exact project-local NeginAI skill routed to Automation-X.",{name:{type:"string"}},["name"]),
+    T("automation_x_skill_resolve","Resolve an Automation-X task to the most relevant project-local NeginAI skills.",{task:{type:"string"},limit:{type:"integer",minimum:1,maximum:10}},["task"])
+  ];
+}
+function _neginaiAutomationTools(){ return [..._neginaiAutomationBaseTools(),..._neginaiAutomationSkillTools()]; }
+async function _neginaiAutomationCall(c,n,a,h){
+  if(n==="automation_x_skill_catalog") return neginaiProjectSkills.catalog("Automation-X",a.query||"");
+  if(n==="automation_x_skill_get") return neginaiProjectSkills.get("Automation-X",a.name);
+  if(n==="automation_x_skill_resolve") return neginaiProjectSkills.resolve("Automation-X",a.task||"",a.limit||5);
+  if(n==="automation_x_status"){
+    const r=await _neginaiAutomationBaseCall(c,n,a,h);
+    return {...r,tool_count:_neginaiAutomationTools().length,project_skill_routing:true,skill_root:neginaiProjectSkills.root()};
+  }
+  if(n==="automation_x_capabilities"){
+    const r=await _neginaiAutomationBaseCall(c,n,a,h);
+    return {...r,capabilities:_neginaiAutomationTools().map(x=>x.name),project_skill_routing:true};
+  }
+  return _neginaiAutomationBaseCall(c,n,a,h);
+}
+module.exports={tools:_neginaiAutomationTools,call:_neginaiAutomationCall};
